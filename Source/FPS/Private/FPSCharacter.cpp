@@ -82,6 +82,8 @@ AFPSCharacter::AFPSCharacter()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+	RunMultiplier = 2.f;
 }
 
 void AFPSCharacter::BeginPlay()
@@ -119,6 +121,10 @@ void AFPSCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFPSCharacter::OnFire);
+
+	// Bind Shift pressed
+	PlayerInputComponent->BindAction("Shift", IE_Pressed, this, &AFPSCharacter::OnShift);
+	PlayerInputComponent->BindAction("Shift", IE_Released, this, &AFPSCharacter::OffShift);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -189,6 +195,18 @@ void AFPSCharacter::OnFire()
 void AFPSCharacter::OnResetVR()
 {
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
+}
+
+void AFPSCharacter::OnShift()
+{
+	IsShift = true;
+	GetCharacterMovement()->MaxWalkSpeed *= RunMultiplier;
+}
+
+void AFPSCharacter::OffShift()
+{
+	IsShift = false;
+	GetCharacterMovement()->MaxWalkSpeed /=RunMultiplier;
 }
 
 void AFPSCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)

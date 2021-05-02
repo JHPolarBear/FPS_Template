@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CommonDefines.h"
 #include "GameFramework/Character.h"
 #include "FPSCharacter.generated.h"
 
@@ -112,6 +112,12 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
+	/**
+	 * Swith whether shift is cliked or not
+	 */
+	 void OnShift();
+	 void OffShift();
+
 	struct TouchData
 	{
 		TouchData() { bIsPressed = false;Location=FVector::ZeroVector;}
@@ -143,6 +149,14 @@ public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = true))
+	bool IsShift;	// Is Shift key is clicked;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = true))
+	float RunMultiplier;
 
 };
 
