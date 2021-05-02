@@ -19,6 +19,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+private:
+	
+	// Skeletal mesh of weapon
+	USkeletalMeshComponent* Mesh;
 
 };
