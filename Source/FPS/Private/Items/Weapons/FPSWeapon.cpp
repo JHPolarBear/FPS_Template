@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FPSWeapon.h"
+#include "Items/Weapons/FPSWeapon.h"
 
 // Sets default values
 AFPSWeapon::AFPSWeapon()
@@ -14,7 +14,6 @@ AFPSWeapon::AFPSWeapon()
 // Called when the game starts or when spawned
 void AFPSWeapon::BeginPlay()
 {
-	Super::BeginPlay();
-	
+	Super::BeginPlay();	
 }
 
