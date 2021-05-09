@@ -13,5 +13,10 @@ UCLASS()
 class FPS_API AFPSPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+public:
+	
+private:
+	
 	
 };
