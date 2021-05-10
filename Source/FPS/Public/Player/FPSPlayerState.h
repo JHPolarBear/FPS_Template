@@ -19,11 +19,19 @@ class FPS_API AFPSPlayerState : public APlayerState
 public:
 	AFPSPlayerState();
 
+	void SetMaxHP(float _val);
+	float GetMaxHP() const; 
+
+	void SetMaxAP(float _val);
+	float GetMaxAP() const; 
+
+	void Init();
+
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccessOnly = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float MaxHP;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccessOnly = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float MaxAP;
 	
 };
