@@ -5,8 +5,7 @@
 
 AFPSPlayerState::AFPSPlayerState()
 {
-	MaxHP = 0;
-	MaxAP = 0;
+	Init();
 }
 
 void AFPSPlayerState::SetMaxHP(float _val)
@@ -19,6 +18,11 @@ float AFPSPlayerState::GetMaxHP() const
 	return MaxHP;
 }
 
+float AFPSPlayerState::GetHPRatio()
+{
+	return CurrentHP / MaxHP;
+}
+
 void AFPSPlayerState::SetMaxAP(float _val)
 {
 	MaxAP = _val;
@@ -27,4 +31,18 @@ void AFPSPlayerState::SetMaxAP(float _val)
 float AFPSPlayerState::GetMaxAP() const
 {
 	return MaxAP;
+}
+
+float AFPSPlayerState::GetAPRatio()
+{
+	return CurrentAP / MaxAP;
+}
+
+void AFPSPlayerState::Init()
+{
+	MaxHP = 100;
+	MaxAP = 100;
+
+	CurrentHP = 100;
+	CurrentAP = 80;
 }

@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerState.h"
 #include "FPSPlayerState.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnPlayerStateChangedDelegate);
+
 /**
  * 
  */
@@ -21,17 +23,27 @@ public:
 
 	void SetMaxHP(float _val);
 	float GetMaxHP() const; 
+	float GetHPRatio();
 
 	void SetMaxAP(float _val);
 	float GetMaxAP() const; 
+	float GetAPRatio();
 
 	void Init();
+
+	FOnPlayerStateChangedDelegate OnPlayerStateChanged;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float MaxHP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
+	float CurrentHP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float MaxAP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
+	float CurrentAP;
 	
 };

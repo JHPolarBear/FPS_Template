@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CommonDefines.h"
 #include "GameFramework/PlayerController.h"
 #include "FPSPlayerController.generated.h"
 
@@ -15,8 +15,18 @@ class FPS_API AFPSPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	AFPSPlayerController();
+
+protected:
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UMainInfoWidget> MainInfoWidgetClass;
 	
 private:
+
+	UPROPERTY()
+	class UMainInfoWidget* MainInfoWidget;
 	
 	
 };
