@@ -58,7 +58,8 @@ public:
 	AFPSCharacter();
 
 protected:
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
+	virtual void Tick( float DeltaSeconds ) override;
 
 public:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
@@ -88,6 +89,10 @@ public:
 	/** Whether to use motion controller location for aiming. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint8 bUsingMotionControllers : 1;
+
+	/** Camera Shake */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
+	TSubclassOf<class UCameraShakeBase> CamreaShake;
 
 protected:
 	
@@ -158,11 +163,10 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = true))
 	bool IsShift;	// Is Shift key is clicked;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = true))
-	float RunMultiplier;
+	UPROPERTY()
+	class AFPSPlayerState* FPSPlayerState;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement, meta = (AllowPrivateAccess = true))
-	float Endurance;
-
+	UPROPERTY()
+	class AFPSPlayerController* FPSPlayerController;
 };
 

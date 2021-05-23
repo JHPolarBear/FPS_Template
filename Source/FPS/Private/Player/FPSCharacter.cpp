@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Player/FPSCharacter.h"
+#include "Player/FPSPlayerState.h"
+#include "Player/FPSPlayerController.h"
+
 #include "FPSProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -11,6 +14,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -83,13 +87,15 @@ AFPSCharacter::AFPSCharacter()
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
 
-	RunMultiplier = 2.f;
+	IsShift = false;
 }
 
 void AFPSCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	PrimaryActorTick.bCanEverTick = true;
 
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
@@ -104,6 +110,28 @@ void AFPSCharacter::BeginPlay()
 	{
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
+	}
+
+	FPSPlayerController = Cast<AFPSPlayerController>(GetController());
+	ASSERT_CHECK(FPSPlayerController != nullptr);
+
+	FPSPlayerState = FPSPlayerController->GetPlayerState<AFPSPlayerState>();
+	ASSERT_CHECK(FPSPlayerState != nullptr);
+
+	FPSPlayerState->SetDefaultWalkSpeed(GetCharacterMovement()->MaxWalkSpeed);
+	FPSPlayerState->SetRunMultiplier(2.0f);
+}
+
+void AFPSCharacter::Tick(float DeltaSeconds)
+{
+	if(IsShift == false)
+	{
+		FPSPlayerState->IncreaseAP();
+	}
+
+	if(FPSPlayerState->GetCurrentAP() <= 0.f)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = FPSPlayerState->GetDefaultWalkSpeed();
 	}
 }
 
@@ -121,6 +149,7 @@ void AFPSCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFPSCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Repeat, this, &AFPSCharacter::OnFire);
 
 	// Bind Shift pressed
 	PlayerInputComponent->BindAction("Shift", IE_Pressed, this, &AFPSCharacter::OnShift);
@@ -169,7 +198,9 @@ void AFPSCharacter::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				World->SpawnActor<AFPSProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				AFPSProjectile* Bullet =  World->SpawnActor<AFPSProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);				
+
+				World->GetFirstPlayerController()->PlayerCameraManager->StartCameraShake(CamreaShake, 1.0);
 			}
 		}
 	}
@@ -200,13 +231,22 @@ void AFPSCharacter::OnResetVR()
 void AFPSCharacter::OnShift()
 {
 	IsShift = true;
-	GetCharacterMovement()->MaxWalkSpeed *= RunMultiplier;
+
+	if(FPSPlayerState->GetCurrentAP() > 0.f)
+	{
+		GetCharacterMovement()->MaxWalkSpeed *= FPSPlayerState->GetRunMultiplier();
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = FPSPlayerState->GetDefaultWalkSpeed();
+	}
 }
 
 void AFPSCharacter::OffShift()
 {
 	IsShift = false;
-	GetCharacterMovement()->MaxWalkSpeed /=RunMultiplier;
+
+	GetCharacterMovement()->MaxWalkSpeed = FPSPlayerState->GetDefaultWalkSpeed();	
 }
 
 void AFPSCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
@@ -276,6 +316,11 @@ void AFPSCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0f)
 	{
+		if(IsShift)
+		{
+			FPSPlayerState->DecreaseAP();
+		}
+
 		// add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
 	}

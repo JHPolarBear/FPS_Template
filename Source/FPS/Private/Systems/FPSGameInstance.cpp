@@ -8,5 +8,5 @@ UFPSGameInstance::UFPSGameInstance()
 {
 	LOG_WARNING(TEXT("Game Instance created"));
 
-	this->GetSubsystem<UPlayerSystem>();
+	//this->GetSubsystem<UPlayerSystem>();
 }

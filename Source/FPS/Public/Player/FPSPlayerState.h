@@ -23,11 +23,22 @@ public:
 
 	void SetMaxHP(float _val);
 	float GetMaxHP() const; 
+	float GetCurrentHP() const;
 	float GetHPRatio();
 
-	void SetMaxAP(float _val);
+	void SetMaxAP(float _val);	
 	float GetMaxAP() const; 
+	float GetCurrentAP() const;
 	float GetAPRatio();
+
+	void DecreaseAP();
+	void IncreaseAP();
+
+	void SetRunMultiplier(float _val);
+	float GetRunMultiplier();
+
+	void SetDefaultWalkSpeed(float _val);
+	float GetDefaultWalkSpeed();
 
 	void Init();
 
@@ -45,5 +56,14 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float CurrentAP;
-	
+
+	/** Amount of AP decrease for a frame when player runs */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
+	float DecreaseAmountAP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
+	float DefaultWalkSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
+	float RunMultiplier;
 };
