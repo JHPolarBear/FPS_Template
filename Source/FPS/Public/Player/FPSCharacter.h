@@ -126,6 +126,12 @@ protected:
 	 void OnShift();
 	 void OffShift();
 
+	 /**
+	  *  Switch whether gun is fire or not
+	  */
+	 void TurnOnFire();
+	 void TurnOffFire();
+
 	struct TouchData
 	{
 		TouchData() { bIsPressed = false;Location=FVector::ZeroVector;}
@@ -168,5 +174,11 @@ private:
 
 	UPROPERTY()
 	class AFPSPlayerController* FPSPlayerController;
+
+	// Fire Handler
+	FTimerHandle FireHandler;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Fire, meta = (AllowPrivateAccess = true))
+	float FireRate;
 };
 

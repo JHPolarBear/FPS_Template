@@ -88,6 +88,8 @@ AFPSCharacter::AFPSCharacter()
 	//bUsingMotionControllers = true;
 
 	IsShift = false;
+
+	FireRate = 10.0f;
 }
 
 void AFPSCharacter::BeginPlay()
@@ -148,8 +150,8 @@ void AFPSCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFPSCharacter::OnFire);
-	PlayerInputComponent->BindAction("Fire", IE_Repeat, this, &AFPSCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFPSCharacter::TurnOnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFPSCharacter::TurnOffFire);
 
 	// Bind Shift pressed
 	PlayerInputComponent->BindAction("Shift", IE_Pressed, this, &AFPSCharacter::OnShift);
@@ -247,6 +249,25 @@ void AFPSCharacter::OffShift()
 	IsShift = false;
 
 	GetCharacterMovement()->MaxWalkSpeed = FPSPlayerState->GetDefaultWalkSpeed();	
+}
+
+void AFPSCharacter::TurnOnFire()
+{
+	UWorld* World = GetWorld();
+	if(World)
+	{
+		World->GetTimerManager().SetTimer(FireHandler, this, &AFPSCharacter::OnFire, 1.0f/FireRate, true);
+	}
+}
+
+
+void AFPSCharacter::TurnOffFire()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		World->GetTimerManager().ClearTimer(FireHandler);
+	}
 }
 
 void AFPSCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
