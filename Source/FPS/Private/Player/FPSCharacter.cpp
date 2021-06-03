@@ -4,6 +4,8 @@
 #include "Player/FPSPlayerState.h"
 #include "Player/FPSPlayerController.h"
 
+#include "Items/Weapons/FPSWeapon.h"
+
 #include "FPSProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -44,19 +46,7 @@ AFPSCharacter::AFPSCharacter()
 	Mesh1P->CastShadow = false;
 	Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
-
-	// Create a gun mesh component
-	FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
-	FP_Gun->SetOnlyOwnerSee(false);			// otherwise won't be visible in the multiplayer
-	FP_Gun->bCastDynamicShadow = false;
-	FP_Gun->CastShadow = false;
-	// FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
-	FP_Gun->SetupAttachment(RootComponent);
-
-	FP_MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleLocation"));
-	FP_MuzzleLocation->SetupAttachment(FP_Gun);
-	FP_MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));
-
+	
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
@@ -88,8 +78,11 @@ AFPSCharacter::AFPSCharacter()
 	//bUsingMotionControllers = true;
 
 	IsShift = false;
+}
 
-	FireRate = 10.0f;
+void AFPSCharacter::SetWeapon(class AFPSWeapon* weapon)
+{
+	FP_Weapon = weapon;
 }
 
 void AFPSCharacter::BeginPlay()
@@ -100,7 +93,16 @@ void AFPSCharacter::BeginPlay()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
-	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+
+	auto NewWeapon = GetWorld()->SpawnActor<AFPSWeapon>(AFPSWeapon::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
+	if (NewWeapon)
+	{
+		SetWeapon(NewWeapon);
+
+		FP_Weapon->SetOwner(this);
+		FP_Weapon->SetHiddenInGame(false);
+		FP_Weapon->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("GripPoint"));
+	}
 
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
 	if (bUsingMotionControllers)
@@ -126,14 +128,17 @@ void AFPSCharacter::BeginPlay()
 
 void AFPSCharacter::Tick(float DeltaSeconds)
 {
-	if(IsShift == false)
+	if(FPSPlayerState)
 	{
-		FPSPlayerState->IncreaseAP();
-	}
+		if (IsShift == false)
+		{
+			FPSPlayerState->IncreaseAP();
+		}
 
-	if(FPSPlayerState->GetCurrentAP() <= 0.f)
-	{
-		GetCharacterMovement()->MaxWalkSpeed = FPSPlayerState->GetDefaultWalkSpeed();
+		if (FPSPlayerState->GetCurrentAP() <= 0.f)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = FPSPlayerState->GetDefaultWalkSpeed();
+		}
 	}
 }
 
@@ -192,8 +197,13 @@ void AFPSCharacter::OnFire()
 			else
 			{
 				const FRotator SpawnRotation = GetControlRotation();
+
+				FVector WeaponMuzzleLocation = FVector::ZeroVector; 
+				if(FP_Weapon)
+					WeaponMuzzleLocation = FP_Weapon->GetMuzzleLocation();
+
 				// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-				const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+				const FVector SpawnLocation = ((WeaponMuzzleLocation != FVector::ZeroVector) ? WeaponMuzzleLocation : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
 
 				//Set Spawn Collision Handling Override
 				FActorSpawnParameters ActorSpawnParams;
@@ -253,9 +263,16 @@ void AFPSCharacter::OffShift()
 
 void AFPSCharacter::TurnOnFire()
 {
+	OnFire();
+
 	UWorld* World = GetWorld();
 	if(World)
 	{
+		float FireRate = 1.f;
+		
+		if(FP_Weapon)
+			FireRate = FP_Weapon->GetFireRate();
+
 		World->GetTimerManager().SetTimer(FireHandler, this, &AFPSCharacter::OnFire, 1.0f/FireRate, true);
 	}
 }

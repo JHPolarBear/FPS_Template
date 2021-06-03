@@ -15,6 +15,12 @@ public:
 	// Sets default values for this actor's properties
 	AFPSWeapon();
 
+	void SetHiddenInGame(bool NewHidden, bool bPropagateToChildren = false);
+
+	FVector GetMuzzleLocation() const;
+
+	float	GetFireRate() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -22,6 +28,13 @@ protected:
 private:
 	
 	// Skeletal mesh of weapon
+	UPROPERTY(VisibleAnyWhere, Category = Weapon)
 	USkeletalMeshComponent* Mesh;
 
+	/** Location on gun mesh where projectiles should spawn. */
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	USceneComponent* MuzzleLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	float FireRate;
 };
