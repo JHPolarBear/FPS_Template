@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CommonDefines.h"
 #include "GameFramework/Actor.h"
 #include "FPSWeapon.generated.h"
 
@@ -21,6 +21,11 @@ public:
 
 	float	GetFireRate() const;
 
+	void	SetProjectileBounce(bool _val);
+	float	GetProjectileBounce() const;
+
+	virtual AActor* OnFire(FVector const& Location, FRotator const& Rotation, const FActorSpawnParameters& SpawnParameters = FActorSpawnParameters());
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,8 +38,27 @@ private:
 
 	/** Location on gun mesh where projectiles should spawn. */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	USceneComponent* MuzzleLocation;
+	USceneComponent* MuzzleLocation;	
 
+	/** Weapon Fire Rate */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	float FireRate;
+
+	/** can the projectile from weapon can be bounce */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	bool  ProjectileBounce;
+
+	
+private:
+	/** Weapon's component */
+	/** Projectile class to spawn */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Projectile, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class AFPSProjectile> ProjectileClass;
+
+	/** Sound to play each time we fire */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound, meta = (AllowPrivateAccess = "true"))
+	USoundBase* FireSound;
+
+
+	
 };

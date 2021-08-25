@@ -6,7 +6,7 @@
 
 #include "Items/Weapons/FPSWeapon.h"
 
-#include "FPSProjectile.h"
+#include "Items/Projectiles/FPSProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -74,6 +74,13 @@ AFPSCharacter::AFPSCharacter()
 	VR_MuzzleLocation->SetRelativeLocation(FVector(0.000004, 53.999992, 10.000000));
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
+	// Find Default weapon class and save into character's wepaon db	
+	static ConstructorHelpers::FClassFinder<AFPSWeapon> BP_WEAPON_DEFAULT(TEXT("Blueprint'/Game/BluePrints/BP_Weapon_Default.BP_Weapon_Default_C'"));
+	if (BP_WEAPON_DEFAULT.Succeeded())
+	{
+		WeaponClass = BP_WEAPON_DEFAULT.Class;		
+	}
+
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
 
@@ -92,12 +99,11 @@ void AFPSCharacter::BeginPlay()
 
 	PrimaryActorTick.bCanEverTick = true;
 
-	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
-
-	auto NewWeapon = GetWorld()->SpawnActor<AFPSWeapon>(AFPSWeapon::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
-	if (NewWeapon)
+	// Create and Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
+	if(WeaponClass != nullptr)
 	{
-		SetWeapon(NewWeapon);
+		auto DefalutWeapon = GetWorld()->SpawnActor<AFPSWeapon>(WeaponClass, FVector::ZeroVector, FRotator::ZeroRotator);
+		SetWeapon(DefalutWeapon);
 
 		FP_Weapon->SetOwner(this);
 		FP_Weapon->SetHiddenInGame(false);
@@ -183,24 +189,28 @@ void AFPSCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 void AFPSCharacter::OnFire()
 {
 	// try and fire a projectile
-	if (ProjectileClass != nullptr)
+	if (FP_Weapon != nullptr)
 	{
 		UWorld* const World = GetWorld();
 		if (World != nullptr)
 		{
+			// Diable VR Fire Function temporary
 			if (bUsingMotionControllers)
 			{
-				const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
+				/*const FRotator SpawnRotation = VR_MuzzleLocation->GetComponentRotation();
 				const FVector SpawnLocation = VR_MuzzleLocation->GetComponentLocation();
-				World->SpawnActor<AFPSProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
+				World->SpawnActor<AFPSProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);*/
 			}
 			else
 			{
 				const FRotator SpawnRotation = GetControlRotation();
 
+				// Weapon's projectile start location
 				FVector WeaponMuzzleLocation = FVector::ZeroVector; 
 				if(FP_Weapon)
+				{
 					WeaponMuzzleLocation = FP_Weapon->GetMuzzleLocation();
+				}
 
 				// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
 				const FVector SpawnLocation = ((WeaponMuzzleLocation != FVector::ZeroVector) ? WeaponMuzzleLocation : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
@@ -209,18 +219,13 @@ void AFPSCharacter::OnFire()
 				FActorSpawnParameters ActorSpawnParams;
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-				// spawn the projectile at the muzzle
-				AFPSProjectile* Bullet =  World->SpawnActor<AFPSProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);				
+				// Activate equipped player weapon
+				FP_Weapon->OnFire(SpawnLocation, SpawnRotation, ActorSpawnParams);
 
+				// Shake camera
 				World->GetFirstPlayerController()->PlayerCameraManager->StartCameraShake(CamreaShake, 1.0);
 			}
 		}
-	}
-
-	// try and play the sound if specified
-	if (FireSound != nullptr)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 
 	// try and play a firing animation if specified

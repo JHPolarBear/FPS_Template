@@ -2,6 +2,9 @@
 
 
 #include "Items/Weapons/FPSWeapon.h"
+#include "Items/Projectiles/FPSProjectile.h"
+
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFPSWeapon::AFPSWeapon()
@@ -24,9 +27,11 @@ AFPSWeapon::AFPSWeapon()
 
 	MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleLocation"));
 	MuzzleLocation->SetupAttachment(Mesh);
-	MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));
+	MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));	
 
 	FireRate = 10.0f;
+
+	ProjectileBounce = false;
 }
 
 // Called when the game starts or when spawned
@@ -51,5 +56,42 @@ FVector AFPSWeapon::GetMuzzleLocation() const
 float AFPSWeapon::GetFireRate() const
 {
 	return FireRate;
+}
+
+void AFPSWeapon::SetProjectileBounce(bool _val)
+{
+	ProjectileBounce = _val;
+
+	if(ProjectileClass)
+	{
+		AFPSProjectile* pProjectileClass = Cast<AFPSProjectile>(ProjectileClass);
+
+		if(pProjectileClass)
+			pProjectileClass->SetIsBounce(_val);
+	}
+}
+
+float AFPSWeapon::GetProjectileBounce() const
+{
+	return ProjectileBounce;
+}
+
+AActor* AFPSWeapon::OnFire(FVector const& Location, FRotator const& Rotation, const FActorSpawnParameters& SpawnParameters /*= FActorSpawnParameters()*/)
+{
+	if(ProjectileClass)
+	{
+		auto Bullet = GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, Location, Rotation, SpawnParameters);
+
+		//return Bullet;
+	}
+
+	// try and play the sound if specified
+	if (FireSound != nullptr)
+	{
+		LOG_WARNING(TEXT("Sound Start"));
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
+
+	return NULL;
 }
 
