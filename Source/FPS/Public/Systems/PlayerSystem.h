@@ -16,5 +16,8 @@ class FPS_API UPlayerSystem : public UGameInstanceSubsystem
 
 public:
 	UPlayerSystem();
+
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
 	
 };

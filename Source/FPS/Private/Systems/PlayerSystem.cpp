@@ -7,3 +7,13 @@ UPlayerSystem::UPlayerSystem()
 {
 	LOG_WARNING(TEXT("PlayerSystem Created"));
 }	
+
+void UPlayerSystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+	LOG_WARNING(TEXT("PlayerSystem Initialized"));
+}
+
+void UPlayerSystem::Deinitialize()
+{
+	LOG_WARNING(TEXT("PlayerSystem Deinitialized"));
+}
