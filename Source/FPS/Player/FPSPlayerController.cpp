@@ -15,6 +15,11 @@ AFPSPlayerController::AFPSPlayerController()
 	}
 }
 
+TWeakObjectPtr<class UMainInfoWidget> AFPSPlayerController::GetMainInfoWidget()
+{
+	return MainInfoWidget;
+}
+
 void AFPSPlayerController::BeginPlay()
 {
 	MainInfoWidget = CreateWidget<UMainInfoWidget>(this, MainInfoWidgetClass);

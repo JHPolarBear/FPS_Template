@@ -45,12 +45,15 @@ public:
 	FOnPlayerStateChangedDelegate OnPlayerStateChanged;
 
 private:
+	/** HP: Character's life point  */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float MaxHP;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float CurrentHP;
 
+	/** Action Point: Points indicating how long the character can dash */
+	/** Action Point: 캐릭터가 대시할 수 있는 시간을 나타내는 포인트 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float MaxAP;
 
@@ -64,6 +67,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float DefaultWalkSpeed;
 
+	/** Dash parameter */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Status, meta = (AllowPrivateAccess = true))
 	float RunMultiplier;
 };

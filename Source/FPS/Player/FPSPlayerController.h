@@ -17,6 +17,8 @@ class FPS_API AFPSPlayerController : public APlayerController
 public:
 	AFPSPlayerController();
 
+	TWeakObjectPtr<class UMainInfoWidget> GetMainInfoWidget();
+
 protected:
 	virtual void BeginPlay() override;
 
