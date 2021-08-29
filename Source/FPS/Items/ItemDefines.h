@@ -2,9 +2,22 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CommonDefines.h"
 #include "UObject/NoExportTypes.h"
 #include "ItemDefines.generated.h"
+
+// Enum for item type
+UENUM()
+enum class EItemTypes
+{
+	ITEM_NONE,
+
+	ITEM_RIFLE,
+	ITEM_HANDGUN,
+	ITEM_DAGGER,
+
+	ITEM_MAX,
+};
 
 /**
  * 

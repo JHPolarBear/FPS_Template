@@ -43,16 +43,20 @@ private:
 	USkeletalMeshComponent* Mesh;
 
 	// Weapon ID
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
 	int32	ID;
 
 	// Weapon Type
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
-
+	UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
+	EItemTypes eType;
 
 	// Weapon English name
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
 	FString WeaponName_EN;
+
+	// Weapon Thumbnail file name
+	UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
+	FString WeaponThumbnail_Path;
 
 	/** Location on gun mesh where projectiles should spawn. */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
