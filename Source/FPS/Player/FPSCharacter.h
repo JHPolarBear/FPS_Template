@@ -56,6 +56,9 @@ public:
 	// Set Weapon to character
 	void SetWeapon(class AFPSWeapon* weapon);
 
+	// Return weapon pointer (const)
+	FORCEINLINE class AFPSWeapon*  GetWeapon() const {return FP_Weapon;}
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick( float DeltaSeconds ) override;

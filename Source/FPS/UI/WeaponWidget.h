@@ -15,6 +15,10 @@ class FPS_API UWeaponWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void BindWeapon(class AFPSWeapon* weapon);
-	
+	bool BindWeapon(class AFPSWeapon* weapon);
+
+	void UpdateWeaponState();
+
+private:
+	TWeakObjectPtr<class AFPSWeapon> CurrentWeapon;
 };

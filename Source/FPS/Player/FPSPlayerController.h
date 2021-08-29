@@ -24,11 +24,17 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
 	TSubclassOf<class UMainInfoWidget> MainInfoWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UWeaponWidget> WeaponWidgetClass;
 	
 private:
 
 	UPROPERTY()
 	class UMainInfoWidget* MainInfoWidget;
+
+	UPROPERTY()
+	class UWeaponWidget* WeaponWidget;
 	
 	
 };
