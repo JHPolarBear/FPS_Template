@@ -42,33 +42,35 @@ private:
 	UPROPERTY(VisibleAnyWhere, Category = Mesh)
 	USkeletalMeshComponent* Mesh;
 
-	// Weapon ID
-	UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
-	int32	ID;
+	//// Weapon ID
+	//UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
+	//int32	ID;
 
-	// Weapon Type
-	UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
-	EItemTypes eType;
+	//// Weapon Type
+	//UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
+	//EItemTypes eType;
 
-	// Weapon English name
-	UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
-	FString WeaponName_EN;
+	//// Weapon English name
+	//UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
+	//FString WeaponName_EN;
 
-	// Weapon Thumbnail file name
-	UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
-	FString WeaponThumbnail_Path;
+	//// Weapon Thumbnail file name
+	//UPROPERTY(Transient, VisibleAnywhere, Category = Weapon)
+	//FString WeaponThumbnail_Path;
 
 	/** Location on gun mesh where projectiles should spawn. */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	USceneComponent* MuzzleLocation;	
 
-	/** Weapon Fire Rate */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	float FireRate;
+	///** Weapon Fire Rate */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	//float FireRate;
 
-	/** can the projectile from weapon can be bounce */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	bool  ProjectileBounce;
+	///** can the projectile from weapon can be bounce */
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	//bool  ProjectileBounce;
+
+	FItemData* ItemData = nullptr;
 
 	
 private:
@@ -80,6 +82,10 @@ private:
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound, meta = (AllowPrivateAccess = "true"))
 	USoundBase* FireSound;
+
+public:
+
+	FItemData* GetItemData() const;
 
 
 	

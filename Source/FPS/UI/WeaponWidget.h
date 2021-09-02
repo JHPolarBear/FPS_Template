@@ -17,8 +17,12 @@ class FPS_API UWeaponWidget : public UUserWidget
 public:
 	bool BindWeapon(class AFPSWeapon* weapon);
 
+	virtual void NativeConstruct() override;
+
 	void UpdateWeaponState();
 
 private:
 	TWeakObjectPtr<class AFPSWeapon> CurrentWeapon;
+
+	class UImage* ThumbnailImage = nullptr;
 };

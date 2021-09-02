@@ -16,5 +16,11 @@ class FPS_API UFPSGameInstance : public UGameInstance
 
 public:
 	UFPSGameInstance();
+
+public:
+	struct FItemData* GetItemData(int32 _ID);
+
+private:
+	class UDataTable* FPSItemTable;
 	
 };

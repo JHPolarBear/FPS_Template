@@ -3,8 +3,13 @@
 #pragma once
 
 #include "CommonDefines.h"
+
+#include "Engine/DataTable.h"
+
 #include "UObject/NoExportTypes.h"
 #include "ItemDefines.generated.h"
+
+#define _ITME_THUMBNAIL_FOLDER "/Game/Images/Thumbnails/"
 
 // Enum for item type
 UENUM()
@@ -17,6 +22,41 @@ enum class EItemTypes
 	ITEM_DAGGER,
 
 	ITEM_MAX,
+};
+
+// Item ¼Ó¼º
+USTRUCT(BlueprintType)
+struct FItemData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+
+	FItemData() : Type(0), Name(TEXT("")), FireRate(1.f), IsProjectileBounce(false), ThumbnailPath(TEXT("")) {}
+
+	// Weapon ID
+	// use datatable index
+
+	// Weapon Type
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	int32 Type;
+
+	// Weapon English name
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	FString Name;
+
+	/** Weapon Fire Rate */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float FireRate;
+
+	/** can the projectile from weapon can be bounce */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	bool IsProjectileBounce;
+
+	// Weapon Thumbnail file name
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	FString ThumbnailPath;
+
 };
 
 /**

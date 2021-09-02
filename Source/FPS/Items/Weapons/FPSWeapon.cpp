@@ -29,15 +29,22 @@ AFPSWeapon::AFPSWeapon()
 	MuzzleLocation->SetupAttachment(Mesh);
 	MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));	
 
-	FireRate = 10.0f;
-
-	ProjectileBounce = false;
 }
 
 // Called when the game starts or when spawned
 void AFPSWeapon::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();		
+
+
+	auto GameInstance = Cast<UFPSGameInstance>(GetGameInstance());
+	ASSERT_CHECK(GameInstance != nullptr)
+	ItemData = GameInstance->GetItemData(0);
+}
+
+FItemData* AFPSWeapon::GetItemData() const
+{
+	return ItemData;
 }
 
 void AFPSWeapon::SetHiddenInGame(bool NewHidden, bool bPropagateToChildren /*= false*/)
@@ -55,12 +62,12 @@ FVector AFPSWeapon::GetMuzzleLocation() const
 
 float AFPSWeapon::GetFireRate() const
 {
-	return FireRate;
+	return ItemData->FireRate;
 }
 
 void AFPSWeapon::SetProjectileBounce(bool _val)
 {
-	ProjectileBounce = _val;
+	ItemData->IsProjectileBounce = _val;
 
 	if(ProjectileClass)
 	{
@@ -73,7 +80,7 @@ void AFPSWeapon::SetProjectileBounce(bool _val)
 
 float AFPSWeapon::GetProjectileBounce() const
 {
-	return ProjectileBounce;
+	return ItemData->IsProjectileBounce;
 }
 
 AActor* AFPSWeapon::OnFire(FVector const& Location, FRotator const& Rotation, const FActorSpawnParameters& SpawnParameters /*= FActorSpawnParameters()*/)

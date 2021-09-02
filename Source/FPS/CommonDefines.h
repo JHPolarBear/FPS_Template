@@ -6,6 +6,8 @@
 
 #include "Items/ItemDefines.h"
 
+#include "Systems/FPSGameInstance.h"
+
 DECLARE_LOG_CATEGORY_EXTERN(FPSGame, Log, All);
 
 // Custom Log and Null check
