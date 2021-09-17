@@ -75,7 +75,7 @@ AFPSCharacter::AFPSCharacter()
 	VR_MuzzleLocation->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));		// Counteract the rotation of the VR gun model.
 
 	// Find Default weapon class and save into character's wepaon db	
-	static ConstructorHelpers::FClassFinder<AFPSWeapon> BP_WEAPON_DEFAULT(TEXT("Blueprint'/Game/BluePrints/BP_Weapon_Default.BP_Weapon_Default_C'"));
+	static ConstructorHelpers::FClassFinder<AFPSWeapon> BP_WEAPON_DEFAULT(TEXT("/Game/BluePrints/Weapons/BP_Weapon_Default.BP_Weapon_Default_C"));
 	if (BP_WEAPON_DEFAULT.Succeeded())
 	{
 		WeaponClass = BP_WEAPON_DEFAULT.Class;		
