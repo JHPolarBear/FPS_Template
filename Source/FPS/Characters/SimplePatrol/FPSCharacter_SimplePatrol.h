@@ -1,4 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
+// 랜덤하게 네비게이션 볼륨 내부를 이동하는 캐릭터
+// 예제로 사용하기 위해 별도 캐릭터 분리
 
 #pragma once
 

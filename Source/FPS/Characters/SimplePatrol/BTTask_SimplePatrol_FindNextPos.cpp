@@ -13,7 +13,7 @@
 
 UBTTask_SimplePatrol_FindNextPos::UBTTask_SimplePatrol_FindNextPos()
 {
-	NodeName = TEXT("FindPatrolPos");
+	NodeName = TEXT("SimplePatrol_FindPatrolPos");
 }
 
 EBTNodeResult::Type UBTTask_SimplePatrol_FindNextPos::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

@@ -13,13 +13,13 @@ const FName  AFPSController_SimplePatrol::FindNextPosKey(TEXT("FindNextPos"));
 
 AFPSController_SimplePatrol::AFPSController_SimplePatrol()
 {
-	static ConstructorHelpers::FObjectFinder<UBlackboardData> BBObject(TEXT("/Game/AI/BB_AI_Patrol_Simple.BB_AI_Patrol_Simple"));
+	static ConstructorHelpers::FObjectFinder<UBlackboardData> BBObject(TEXT("/Game/AI/SimplePatrol/BB_SimplePatrol.BB_SimplePatrol"));
 	if(BBObject.Succeeded())
 	{
 		BBAsset = BBObject.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT("/Game/AI/BT_AI_Patrol_Simple.BT_AI_Patrol_Simple"));
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT("/Game/AI/SimplePatrol/BT_SimplePatrol.BT_SimplePatrol"));
 	if(BTObject.Succeeded())
 	{
 		BTAsset = BTObject.Object;
