@@ -20,6 +20,7 @@ EBTNodeResult::Type UBTTask_SimplePatrol_FindNextPos::ExecuteTask(UBehaviorTreeC
 {
 	EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);
 
+	// AI Owner에서 캐릭터를 찾는다
 	auto ControllingCharacter = Cast<AFPSCharacter_SimplePatrol>(OwnerComp.GetAIOwner()->GetCharacter());
 
 	if (ControllingCharacter == nullptr)
@@ -27,6 +28,7 @@ EBTNodeResult::Type UBTTask_SimplePatrol_FindNextPos::ExecuteTask(UBehaviorTreeC
 
 	FVector RallyPoint = FVector::ZeroVector;
 
+	// Owner character에서 순찰 위치를 찾는다
 	if (ControllingCharacter->GetRallyPoint_Pos(RallyPoint) == false)
 		return EBTNodeResult::Failed;
 
@@ -34,6 +36,7 @@ EBTNodeResult::Type UBTTask_SimplePatrol_FindNextPos::ExecuteTask(UBehaviorTreeC
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(ControllingCharacter->GetWorld());
 
+	// 현재 위치에서 순찰 위치까지 네비게이션으로 길이 존재하는지 확인
 	auto Path = NavSystem->FindPathToLocationSynchronously(ControllingCharacter->GetWorld(), Origin, RallyPoint);
 
 	if(Path == nullptr)
@@ -42,6 +45,7 @@ EBTNodeResult::Type UBTTask_SimplePatrol_FindNextPos::ExecuteTask(UBehaviorTreeC
 		return EBTNodeResult::Failed;
 	}
 
+	// 순찰위치를 블랙보드에 등록하고, 블랙보드에 순찰 위치를 찾았다고 알림
 	OwnerComp.GetBlackboardComponent()->SetValueAsVector(AFPSController_SimplePatrol::NextPosKey, RallyPoint);
 	OwnerComp.GetBlackboardComponent()->SetValueAsBool(AFPSController_SimplePatrol::FindNextPosKey, true);
 	

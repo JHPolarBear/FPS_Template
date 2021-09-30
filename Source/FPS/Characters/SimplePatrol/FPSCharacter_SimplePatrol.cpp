@@ -38,6 +38,7 @@ void AFPSCharacter_SimplePatrol::SetupPlayerInputComponent(UInputComponent* Play
 
 }
 
+// 랠리 포인트의 좌표를 리턴
 bool AFPSCharacter_SimplePatrol::GetRallyPoint_Pos(FVector& _pos)
 {
 	if (RallyPoint)

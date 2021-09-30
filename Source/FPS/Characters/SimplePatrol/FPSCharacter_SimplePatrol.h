@@ -36,6 +36,7 @@ private:
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* Mesh_Static;
 
+	// Patrol position of the character
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Patrol, meta = (AllowPrivateAccess = true))
 	class AActor* RallyPoint;
 };
