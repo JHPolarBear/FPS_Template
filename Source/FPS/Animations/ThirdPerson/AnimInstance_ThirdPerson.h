@@ -17,6 +17,8 @@ class FPS_API UAnimInstance_ThirdPerson : public UAnimInstance
 public:
 	UAnimInstance_ThirdPerson();
 
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Value, meta = (AllowPrivateAccess = true))
 	float CurrentSpeed;
