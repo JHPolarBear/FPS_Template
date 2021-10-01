@@ -225,7 +225,7 @@ void AFPSCharacter::OnFire()
 				FP_Weapon->OnFire(SpawnLocation, SpawnRotation, ActorSpawnParams);
 
 				// Shake camera
-				World->GetFirstPlayerController()->PlayerCameraManager->StartCameraShake(CamreaShake, 1.0);
+				World->GetFirstPlayerController()->PlayerCameraManager->StartCameraShake(CameraShake, 1.0);
 			}
 		}
 	}
