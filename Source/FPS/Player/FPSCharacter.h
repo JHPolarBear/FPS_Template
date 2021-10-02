@@ -27,7 +27,7 @@ class AFPSCharacter : public ACharacter
 	TSubclassOf<class AFPSWeapon> WeaponClass;
 
 	/** 무기 클래스	 */
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	UPROPERTY(EditInstanceOnly, Category = Weapon)
 	class AFPSWeapon* FP_Weapon;
 
 	/** Gun mesh: VR view (attached to the VR controller directly, no arm, just the actual gun) */
@@ -86,7 +86,7 @@ public:
 
 	/** Camera Shake */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
-	TSubclassOf<class UCameraShakeBase> CamreaShake;
+	TSubclassOf<class UCameraShakeBase> CameraShake;
 
 protected:
 	

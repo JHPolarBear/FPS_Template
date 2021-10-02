@@ -3,6 +3,8 @@
 
 #include "Characters/ThirdPerson/FPSCharacter_ThirdPerson.h"
 
+#include "Items/Weapons/FPSWeapon.h"
+
 // Sets default values
 AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
 {
@@ -15,12 +17,22 @@ AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
 		GetMesh()->SetAnimInstanceClass(_ANIM.Class);
 	}
 
+	// Create default weapon class
+	DefaultWeaponClass = AFPSWeapon::StaticClass();
+
 }
 
 // Called when the game starts or when spawned
 void AFPSCharacter_ThirdPerson::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if(DefaultWeaponClass != nullptr)
+	{
+		Weapon = GetWorld()->SpawnActor<AFPSWeapon>(DefaultWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator);
+		if(Weapon)
+			SetWeapon(Weapon);
+	}
 	
 }
 
@@ -35,6 +47,29 @@ void AFPSCharacter_ThirdPerson::Tick(float DeltaTime)
 void AFPSCharacter_ThirdPerson::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
+void AFPSCharacter_ThirdPerson::SetWeapon(AFPSWeapon* _weapon)
+{
+	FName WeaponSocket(TEXT("hand_rSocket"));
+	if(_weapon != nullptr && GetMesh()->DoesSocketExist(WeaponSocket))
+	{
+		_weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+	}
+	else
+	{
+		if(!GetMesh()->DoesSocketExist(WeaponSocket))
+		{
+			LOG_WARNING(TEXT("Failed to find socket"));
+		}
+		else
+		{
+			LOG_WARNING(TEXT("_weapon is empty"));
+		}
+	}
+
+	return;
 
 }
 

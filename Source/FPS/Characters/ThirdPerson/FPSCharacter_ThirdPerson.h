@@ -26,4 +26,29 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	// Set weapon
+	void SetWeapon(class AFPSWeapon* _weapon);
+
+private:
+
+	/** 기본 무기 클래스 */ 
+	/** Default weapon class */
+	UPROPERTY(EditInstanceOnly, Category = Weapon, meta= (AllowPrivateAccess = true) )
+	TSubclassOf<class AFPSWeapon> DefaultWeaponClass;
+
+	/** 현재 장착 중인 무기 */
+	/** Current equipped weapon */
+	UPROPERTY(VisibleAnywhere, Category = Weapon, meta = (AllowPrivateAccess = true))
+	class AFPSWeapon* Weapon;
+
+
+
+	/*****************************************	****************************************/
+	/***	AI Component								********************************/
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AI, meta = (AllowPrivateAccess = true))
+	FVector	SingleRallyPoint;
+
+
 };
