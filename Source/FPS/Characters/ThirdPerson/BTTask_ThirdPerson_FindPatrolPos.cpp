@@ -12,7 +12,7 @@
 
 UBTTask_ThirdPerson_FindPatrolPos::UBTTask_ThirdPerson_FindPatrolPos()
 {
-
+	NodeName = TEXT("ThirdPerson_FindPatrolPos");
 }
 
 EBTNodeResult::Type UBTTask_ThirdPerson_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
