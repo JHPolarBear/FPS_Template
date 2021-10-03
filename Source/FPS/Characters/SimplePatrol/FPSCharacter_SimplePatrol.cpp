@@ -2,7 +2,7 @@
 
 
 #include "FPSCharacter_SimplePatrol.h"
-#include "FPSController_SimplePatrol.h"
+#include "FPSAIController_SimplePatrol.h"
 
 // Sets default values
 AFPSCharacter_SimplePatrol::AFPSCharacter_SimplePatrol()
@@ -13,7 +13,7 @@ AFPSCharacter_SimplePatrol::AFPSCharacter_SimplePatrol()
 	Mesh_Static = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH_STATIC"));
 	Mesh_Static->SetupAttachment(RootComponent);
 
-	AIControllerClass = AFPSController_SimplePatrol::StaticClass();
+	AIControllerClass = AFPSAIController_SimplePatrol::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 

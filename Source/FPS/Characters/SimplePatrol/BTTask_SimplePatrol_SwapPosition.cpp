@@ -5,7 +5,7 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 
-#include "FPSController_SimplePatrol.h"
+#include "FPSAIController_SimplePatrol.h"
 
 #include "NavigationSystem.h"
 
@@ -21,13 +21,13 @@ EBTNodeResult::Type UBTTask_SimplePatrol_SwapPosition::ExecuteTask(UBehaviorTree
 	if(OwnerComp.GetBlackboardComponent() == nullptr)
 		return EBTNodeResult::Failed;	
 
-	FVector PrevNextPos= BlackBoard->GetValueAsVector(AFPSController_SimplePatrol::NextPosKey);
+	FVector PrevNextPos= BlackBoard->GetValueAsVector(AFPSAIController_SimplePatrol::NextPosKey);
 	
-	FVector PrevHomePos = BlackBoard->GetValueAsVector(AFPSController_SimplePatrol::HomePosKey);
+	FVector PrevHomePos = BlackBoard->GetValueAsVector(AFPSAIController_SimplePatrol::HomePosKey);
 
-	BlackBoard->SetValueAsVector(AFPSController_SimplePatrol::NextPosKey, PrevHomePos);
+	BlackBoard->SetValueAsVector(AFPSAIController_SimplePatrol::NextPosKey, PrevHomePos);
 	
-	BlackBoard->SetValueAsVector(AFPSController_SimplePatrol::HomePosKey, PrevNextPos);
+	BlackBoard->SetValueAsVector(AFPSAIController_SimplePatrol::HomePosKey, PrevNextPos);
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(OwnerComp.GetAIOwner()->GetCharacter()->GetWorld());
 	if(nullptr == NavSystem)

@@ -3,7 +3,7 @@
 
 #include "Characters/RandomMove/FPSCharacter_RandomMove.h"
 
-#include "FPSController_RandomMove.h"
+#include "FPSAIController_RandomMove.h"
 
 // Sets default values
 AFPSCharacter_RandomMove::AFPSCharacter_RandomMove()
@@ -14,7 +14,7 @@ AFPSCharacter_RandomMove::AFPSCharacter_RandomMove()
 	Mesh_Static = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH_STATIC"));
 	Mesh_Static->SetupAttachment(RootComponent);
 
-	AIControllerClass = AFPSController_RandomMove::StaticClass();
+	AIControllerClass = AFPSAIController_RandomMove::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 

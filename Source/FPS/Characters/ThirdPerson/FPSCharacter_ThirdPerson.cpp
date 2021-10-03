@@ -3,6 +3,7 @@
 
 #include "Characters/ThirdPerson/FPSCharacter_ThirdPerson.h"
 
+#include "FPSAIController_ThirdPerson.h"
 #include "Items/Weapons/FPSWeapon.h"
 
 // Sets default values
@@ -19,6 +20,11 @@ AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
 
 	// Create default weapon class
 	DefaultWeaponClass = AFPSWeapon::StaticClass();
+
+	// ai settings
+	AIControllerClass = AFPSAIController_ThirdPerson::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	PatrolType = EPatrolType::PATROL_STILL;								// Default patrol type
 
 }
 
@@ -71,5 +77,26 @@ void AFPSCharacter_ThirdPerson::SetWeapon(AFPSWeapon* _weapon)
 
 	return;
 
+}
+
+void AFPSCharacter_ThirdPerson::SetPatrolType(EPatrolType _type)
+{
+	PatrolType = _type;
+}
+
+const EPatrolType AFPSCharacter_ThirdPerson::GetPatrolType()
+{
+	return PatrolType;
+}
+
+const bool AFPSCharacter_ThirdPerson::GetSinglePatrolPoint(FVector& VecPatrolPosition)
+{
+	if(SinglePatrolPoint == nullptr)
+		return false;
+	else
+	{
+		VecPatrolPosition = SinglePatrolPoint->GetActorLocation();
+		return true;
+	}	
 }
 

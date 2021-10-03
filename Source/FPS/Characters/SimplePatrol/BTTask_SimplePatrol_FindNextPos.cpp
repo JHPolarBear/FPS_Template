@@ -5,7 +5,7 @@
 
 #include "NavigationSystem.h"
 
-#include "FPSController_SimplePatrol.h"
+#include "FPSAIController_SimplePatrol.h"
 
 #include "FPSCharacter_SimplePatrol.h"
 
@@ -32,7 +32,7 @@ EBTNodeResult::Type UBTTask_SimplePatrol_FindNextPos::ExecuteTask(UBehaviorTreeC
 	if (ControllingCharacter->GetRallyPoint_Pos(RallyPoint) == false)
 		return EBTNodeResult::Failed;
 
-	FVector Origin = OwnerComp.GetBlackboardComponent()->GetValueAsVector(AFPSController_SimplePatrol::HomePosKey);
+	FVector Origin = OwnerComp.GetBlackboardComponent()->GetValueAsVector(AFPSAIController_SimplePatrol::HomePosKey);
 
 	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(ControllingCharacter->GetWorld());
 
@@ -46,8 +46,8 @@ EBTNodeResult::Type UBTTask_SimplePatrol_FindNextPos::ExecuteTask(UBehaviorTreeC
 	}
 
 	// 순찰위치를 블랙보드에 등록하고, 블랙보드에 순찰 위치를 찾았다고 알림
-	OwnerComp.GetBlackboardComponent()->SetValueAsVector(AFPSController_SimplePatrol::NextPosKey, RallyPoint);
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(AFPSController_SimplePatrol::FindNextPosKey, true);
+	OwnerComp.GetBlackboardComponent()->SetValueAsVector(AFPSAIController_SimplePatrol::NextPosKey, RallyPoint);
+	OwnerComp.GetBlackboardComponent()->SetValueAsBool(AFPSAIController_SimplePatrol::FindNextPosKey, true);
 	
 
 	return EBTNodeResult::Succeeded;

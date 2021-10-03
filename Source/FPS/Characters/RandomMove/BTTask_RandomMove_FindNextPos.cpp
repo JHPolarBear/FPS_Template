@@ -8,7 +8,7 @@
 #include "AIController.h"
 
 #include "FPSCharacter_RandomMove.h"
-#include "FPSController_RandomMove.h"
+#include "FPSAIController_RandomMove.h"
 
 UBTTask_RandomMove_FindNextPos::UBTTask_RandomMove_FindNextPos()
 {
@@ -41,9 +41,9 @@ EBTNodeResult::Type UBTTask_RandomMove_FindNextPos::ExecuteTask(UBehaviorTreeCom
 
 	if(NavSystem->GetRandomPointInNavigableRadius(crntPos, 500.f, nextPos))
 	{
-		OwnerComp.GetBlackboardComponent()->SetValueAsVector(AFPSController_RandomMove::CrntPosKey, crntPos);
+		OwnerComp.GetBlackboardComponent()->SetValueAsVector(AFPSAIController_RandomMove::CrntPosKey, crntPos);
 
-		OwnerComp.GetBlackboardComponent()->SetValueAsVector(AFPSController_RandomMove::NextPosKey, nextPos);
+		OwnerComp.GetBlackboardComponent()->SetValueAsVector(AFPSAIController_RandomMove::NextPosKey, nextPos);
 		return EBTNodeResult::Succeeded;
 	}
 

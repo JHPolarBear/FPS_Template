@@ -5,6 +5,7 @@
 #include "EngineMinimal.h"
 
 #include "Items/ItemDefines.h"
+#include "Characters/CharacterDefines.h"
 
 #include "Systems/FPSGameInstance.h"
 
