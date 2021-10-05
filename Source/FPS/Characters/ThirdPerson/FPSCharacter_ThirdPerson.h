@@ -37,7 +37,9 @@ public:
 	// Get a single patrol point
 	// @Params 
 	// VecPatrolPosition: vector reference for patrol location
-	const bool GetSinglePatrolPoint(FVector& VecPatrolPosition);
+	bool GetSinglePatrol_Position(FVector& VecPatrolPosition);
+
+	const float GetRandomMove_PratrolRadius()	{return RandomMove_PatrolRadius;}
 
 /** Variables */
 private:
@@ -71,7 +73,12 @@ private:
 
 	// Single patrol point
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AI, meta = (AllowPrivateAccess = true))
-	AActor*	SinglePatrolPoint;
+	AActor*	SinglePatrol_Position;
 
+	/************************************************************************/
+	/**** Single Patrol ****/
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AI, meta = (AllowPrivateAccess = true))
+	float RandomMove_PatrolRadius;
 
 };

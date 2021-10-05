@@ -28,7 +28,7 @@ EBTNodeResult::Type UBTTask_ThirdPerson_FindPatrolPos::ExecuteTask(UBehaviorTree
 	FVector PatrolPoint = FVector::ZeroVector;
 
 	// Owner character에서 순찰 위치를 찾는다
-	if (ControllingCharacter->GetSinglePatrolPoint(PatrolPoint) == false)
+	if (ControllingCharacter->GetSinglePatrol_Position(PatrolPoint) == false)
 		return EBTNodeResult::Failed;
 
 	FVector Origin = OwnerComp.GetBlackboardComponent()->GetValueAsVector(AFPSAIController_ThirdPerson::CrntPosKey);

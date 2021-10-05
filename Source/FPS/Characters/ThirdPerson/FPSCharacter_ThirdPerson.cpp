@@ -25,6 +25,7 @@ AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
 	AIControllerClass = AFPSAIController_ThirdPerson::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	PatrolType = EPatrolType::PATROL_STILL;								// Default patrol type
+	RandomMove_PatrolRadius = 1000.f;									// Default patrol radius
 
 }
 
@@ -89,13 +90,13 @@ const EPatrolType AFPSCharacter_ThirdPerson::GetPatrolType()
 	return PatrolType;
 }
 
-const bool AFPSCharacter_ThirdPerson::GetSinglePatrolPoint(FVector& VecPatrolPosition)
+bool AFPSCharacter_ThirdPerson::GetSinglePatrol_Position(FVector& VecPatrolPosition)
 {
-	if(SinglePatrolPoint == nullptr)
+	if(SinglePatrol_Position == nullptr)
 		return false;
 	else
 	{
-		VecPatrolPosition = SinglePatrolPoint->GetActorLocation();
+		VecPatrolPosition = SinglePatrol_Position->GetActorLocation();
 		return true;
 	}	
 }

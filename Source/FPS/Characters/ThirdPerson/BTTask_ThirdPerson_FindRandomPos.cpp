@@ -34,11 +34,12 @@ EBTNodeResult::Type UBTTask_ThirdPerson_FindRandomPos::ExecuteTask(UBehaviorTree
 
 
 	FVector crntPos = ControlloingCharacter->GetActorLocation();
+	float fPatrolRadius = ControlloingCharacter->GetRandomMove_PratrolRadius();
 
 	FNavLocation nextPos;
 
 
-	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 1000.f, nextPos))
+	if (NavSystem->GetRandomPointInNavigableRadius(crntPos, fPatrolRadius, nextPos))
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsVector(AFPSAIController_ThirdPerson::CrntPosKey, crntPos);
 
