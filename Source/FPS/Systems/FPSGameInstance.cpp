@@ -21,7 +21,7 @@ UFPSGameInstance::UFPSGameInstance()
 
 	ASSERT_CHECK(FPSItemTable->GetRowMap().Num() > 0);
 
-	FString CharacterLevelTablePath = TEXT("DataTable'/Game/Data/Characters/DataTable_CharacterLevel.DataTable_CharacterLevel'");
+ 	FString CharacterLevelTablePath = TEXT("DataTable'/Game/Data/Characters/DataTable_CharacterLevel.DataTable_CharacterLevel'");
 	static ConstructorHelpers::FObjectFinder<UDataTable> DT_CHARLEVELTABLE(*CharacterLevelTablePath);
 	if(DT_CHARLEVELTABLE.Succeeded())
 	{

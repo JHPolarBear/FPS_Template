@@ -4,6 +4,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 
+#include "Characters/ThirdPerson/FPSCharacter_ThirdPerson.h"
+
 AFPSProjectile::AFPSProjectile() 
 {
 	// Use a sphere as a simple collision representation
@@ -34,9 +36,10 @@ AFPSProjectile::AFPSProjectile()
 void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) )
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+		if(OtherComp->IsSimulatingPhysics())
+			OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
 		if(IsBounce)
 		{
@@ -47,6 +50,14 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		else
 		{
 			Destroy();
+		}
+
+		auto OtherCharacter = Cast<AFPSCharacter_ThirdPerson>(OtherActor);
+
+		if(OtherCharacter != nullptr)
+		{
+			FDamageEvent DamageEvent;
+			OtherCharacter->TakeDamage(5.0f, DamageEvent, nullptr, this);
 		}
 	}
 }

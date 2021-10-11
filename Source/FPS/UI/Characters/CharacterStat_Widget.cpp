@@ -31,7 +31,7 @@ void UCharacterStat_Widget::BindCharacterStat(class UStatComponent_ThirdPerson* 
 
 void UCharacterStat_Widget::UpdateCharcterStat()
 {
-	if(CurrentCharacterStat->IsValidLowLevel())
+	if(CurrentCharacterStat != nullptr)
 	{
 		if(HPProgressBar!= nullptr)
 		{

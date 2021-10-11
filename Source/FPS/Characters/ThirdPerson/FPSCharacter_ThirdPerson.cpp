@@ -61,7 +61,13 @@ void AFPSCharacter_ThirdPerson::BeginPlay()
 		Weapon = GetWorld()->SpawnActor<AFPSWeapon>(DefaultWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator);
 		if(Weapon)
 			SetWeapon(Weapon);
-	}	
+	}		
+
+	auto CharaterStatWidget = Cast<UCharacterStat_Widget>(StatBarWidget->GetUserWidgetObject());
+	if (CharaterStatWidget != nullptr)
+	{
+		CharaterStatWidget->BindCharacterStat(CharacterStat);
+	}
 }
 
 // Called every frame
@@ -81,17 +87,17 @@ void AFPSCharacter_ThirdPerson::SetupPlayerInputComponent(UInputComponent* Playe
 void AFPSCharacter_ThirdPerson::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+}
 
-	if (CharacterStat != nullptr)
-	{
-		CharacterStat->SetNewLevel(1);
+float AFPSCharacter_ThirdPerson::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float FinalDamage = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 
-		auto CharaterStatWidget = Cast<UCharacterStat_Widget>(StatBarWidget->GetUserWidgetObject());
-		if (CharaterStatWidget != nullptr)
-		{
-			CharaterStatWidget->BindCharacterStat(CharacterStat);
-		}
-	}
+	LOG_WARNING(TEXT("Damage Occured : %f"), FinalDamage);
+
+	CharacterStat->SetDamage(FinalDamage);
+
+	return FinalDamage;
 }
 
 void AFPSCharacter_ThirdPerson::SetWeapon(AFPSWeapon* _weapon)

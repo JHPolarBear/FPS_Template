@@ -30,6 +30,8 @@ public:
 
 	virtual void PostInitializeComponents() override;
 
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
 public:
 	// Set weapon
 	void SetWeapon(class AFPSWeapon* _weapon);

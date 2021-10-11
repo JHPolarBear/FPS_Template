@@ -15,6 +15,9 @@ UStatComponent_ThirdPerson::UStatComponent_ThirdPerson()
 
 	// ...
 
+	// Default Level
+	Level = 1;
+
 }
 
 
