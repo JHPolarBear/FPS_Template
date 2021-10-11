@@ -10,6 +10,7 @@
 #include "Components/ActorComponent.h"
 #include "StatComponent_ThirdPerson.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnCharacterStatChangedDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class FPS_API UStatComponent_ThirdPerson : public UActorComponent
@@ -37,10 +38,14 @@ public:
 	void SetNewLevel(int32 _NewLevel, bool _RefreshCurrentStat = false);
 
 	float GetMaxHP() const;
+	void  SetCurrentHP(float _newHP);
 	float GetCurrentHP() const;
 	float GetHPRatio();
 
+	void  SetDamage(float _damage);
+
 	float GetMaxAP() const;
+	void  SetCurrentAP(float _newAP);
 	float GetCurrentAP() const;
 	float GetAPRatio();
 
@@ -52,6 +57,9 @@ public:
 
 	void SetDefaultWalkSpeed(float _val);
 	float GetDefaultWalkSpeed();
+
+	// Delegate for character stat change
+	FOnCharacterStatChangedDelegate OnCharacterStatChanged;
 
 private:
 	FCharacterLevelData* CurrentLevelData = nullptr;

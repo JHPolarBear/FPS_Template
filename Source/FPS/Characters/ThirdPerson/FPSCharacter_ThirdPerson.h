@@ -19,12 +19,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void PostInitializeComponents() override;
 
 public:
 	// Set weapon
@@ -62,6 +66,10 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Stat, meta = (AllowPrivateAccess = true))
 	class UStatComponent_ThirdPerson* CharacterStat;
 
+/** UI Components */
+private:
+	UPROPERTY(VisibleAnywhere, Category = UI)
+	class UWidgetComponent* StatBarWidget;
 
 /**	AI Component */
 private:

@@ -47,16 +47,18 @@ void UStatComponent_ThirdPerson::SetNewLevel(int32 _NewLevel, bool _RefreshCurre
 	auto FPSGameInstance = Cast<UFPSGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	ASSERT_CHECK(FPSGameInstance != nullptr);
 
+	// Get Character level info from game instance
 	CurrentLevelData = FPSGameInstance->GetCharacterLevelData(_NewLevel);
 
 	if (CurrentLevelData != nullptr)
 	{
 		Level = _NewLevel;
 
+		// 현재 HP/AP를 갱신시키는 경우 풀로 체워준다
 		if(_RefreshCurrentStat)
 		{
-			CurrentHP = CurrentLevelData->MaxHP;
-			CurrentAP = CurrentLevelData->MaxAP;
+			SetCurrentHP(CurrentLevelData->MaxHP);
+			SetCurrentAP(CurrentLevelData->MaxAP);
 		}
 	}
 }
@@ -64,6 +66,19 @@ void UStatComponent_ThirdPerson::SetNewLevel(int32 _NewLevel, bool _RefreshCurre
 float UStatComponent_ThirdPerson::GetMaxHP() const
 {
 	return CurrentLevelData->MaxHP;
+}
+
+void UStatComponent_ThirdPerson::SetCurrentHP(float _newHP)
+{
+	CurrentHP = _newHP;
+
+	// Broadcast
+	OnCharacterStatChanged.Broadcast();
+
+	if (CurrentHP < KINDA_SMALL_NUMBER)
+	{
+		CurrentHP = 0.0f;
+	}
 }
 
 float UStatComponent_ThirdPerson::GetCurrentHP() const
@@ -79,9 +94,28 @@ float UStatComponent_ThirdPerson::GetHPRatio()
 		return CurrentHP / CurrentLevelData->MaxHP;
 }
 
+void UStatComponent_ThirdPerson::SetDamage(float _damage)
+{
+	ASSERT_CHECK(CurrentLevelData != nullptr);
+
+	SetCurrentHP(FMath::Clamp(CurrentHP - _damage, 0.f, CurrentLevelData->MaxHP));
+}
+
 float UStatComponent_ThirdPerson::GetMaxAP() const
 {
 	return CurrentLevelData->MaxAP;
+}
+
+void UStatComponent_ThirdPerson::SetCurrentAP(float _newAP)
+{
+	CurrentAP = _newAP;
+
+	OnCharacterStatChanged.Broadcast();
+
+	if(CurrentAP < KINDA_SMALL_NUMBER)
+	{
+		CurrentAP = 0.f;
+	}
 }
 
 float UStatComponent_ThirdPerson::GetCurrentAP() const

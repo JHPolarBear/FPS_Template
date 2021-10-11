@@ -3,10 +3,14 @@
 
 #include "Characters/ThirdPerson/FPSCharacter_ThirdPerson.h"
 
+#include "Components/WidgetComponent.h"
+
 #include "FPSAIController_ThirdPerson.h"
 #include "Items/Weapons/FPSWeapon.h"
 
 #include "StatComponent_ThirdPerson.h"
+
+#include "UI/Characters/CharacterStat_Widget.h"
 
 // Sets default values
 AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
@@ -32,6 +36,19 @@ AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
 	// Create Character Level stat component
 	CharacterStat = CreateDefaultSubobject<UStatComponent_ThirdPerson>(TEXT("CHARACTER_STAT"));
 
+	// Initialize Widget Components
+	StatBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("STAT_BARWIDGET"));
+	StatBarWidget->SetupAttachment(GetMesh());
+
+	StatBarWidget->SetRelativeLocation(FVector(0.f, 0.f, 205.f));
+	StatBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_STATBAR(TEXT("WidgetBlueprint'/Game/UI/Characters/UI_NPC_StatBar.UI_NPC_StatBar_C'"));
+	if(UI_STATBAR.Succeeded())
+	{
+		StatBarWidget->SetWidgetClass(UI_STATBAR.Class);
+		StatBarWidget->SetDrawSize(FVector2D(130, 25.f));
+	}
+
 }
 
 // Called when the game starts or when spawned
@@ -44,8 +61,7 @@ void AFPSCharacter_ThirdPerson::BeginPlay()
 		Weapon = GetWorld()->SpawnActor<AFPSWeapon>(DefaultWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator);
 		if(Weapon)
 			SetWeapon(Weapon);
-	}
-	
+	}	
 }
 
 // Called every frame
@@ -60,6 +76,22 @@ void AFPSCharacter_ThirdPerson::SetupPlayerInputComponent(UInputComponent* Playe
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AFPSCharacter_ThirdPerson::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (CharacterStat != nullptr)
+	{
+		CharacterStat->SetNewLevel(1);
+
+		auto CharaterStatWidget = Cast<UCharacterStat_Widget>(StatBarWidget->GetUserWidgetObject());
+		if (CharaterStatWidget != nullptr)
+		{
+			CharaterStatWidget->BindCharacterStat(CharacterStat);
+		}
+	}
 }
 
 void AFPSCharacter_ThirdPerson::SetWeapon(AFPSWeapon* _weapon)
