@@ -20,7 +20,11 @@ public:
 public:
 	struct FItemData* GetItemData(int32 _ID);
 
+	struct FCharacterLevelData* GetCharacterLevelData(int32 _Level);
+
 private:
 	class UDataTable* FPSItemTable;
+
+	class UDataTable* FPSCharacterLevelTable;
 	
 };

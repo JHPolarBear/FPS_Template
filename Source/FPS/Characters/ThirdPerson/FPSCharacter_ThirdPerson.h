@@ -57,6 +57,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Weapon, meta = (AllowPrivateAccess = true))
 	class AFPSWeapon* Weapon;
 
+	/************************************************************************/
+	/**** Weapon  ****/
+	UPROPERTY(VisibleAnywhere, Category = Stat, meta = (AllowPrivateAccess = true))
+	class UStatComponent_ThirdPerson* CharacterStat;
+
 
 /**	AI Component */
 private:

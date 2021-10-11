@@ -6,6 +6,8 @@
 #include "FPSAIController_ThirdPerson.h"
 #include "Items/Weapons/FPSWeapon.h"
 
+#include "StatComponent_ThirdPerson.h"
+
 // Sets default values
 AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
 {
@@ -26,6 +28,9 @@ AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	PatrolType = EPatrolType::PATROL_STILL;								// Default patrol type
 	RandomMove_PatrolRadius = 1000.f;									// Default patrol radius
+
+	// Create Character Level stat component
+	CharacterStat = CreateDefaultSubobject<UStatComponent_ThirdPerson>(TEXT("CHARACTER_STAT"));
 
 }
 
