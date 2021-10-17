@@ -81,6 +81,7 @@ void UStatComponent_ThirdPerson::SetCurrentHP(float _newHP)
 	if (CurrentHP < KINDA_SMALL_NUMBER)
 	{
 		CurrentHP = 0.0f;
+		OnCharacterHPZero.Broadcast();
 	}
 }
 

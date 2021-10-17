@@ -11,6 +11,7 @@
 #include "StatComponent_ThirdPerson.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnCharacterStatChangedDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnCharacterHPZeroDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class FPS_API UStatComponent_ThirdPerson : public UActorComponent
@@ -60,6 +61,8 @@ public:
 
 	// Delegate for character stat change
 	FOnCharacterStatChangedDelegate OnCharacterStatChanged;
+
+	FOnCharacterHPZeroDelegate OnCharacterHPZero;
 
 private:
 	FCharacterLevelData* CurrentLevelData = nullptr;

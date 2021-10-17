@@ -87,6 +87,16 @@ void AFPSCharacter_ThirdPerson::SetupPlayerInputComponent(UInputComponent* Playe
 void AFPSCharacter_ThirdPerson::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	// Add dead animation to character stat component's delegate
+	auto Anim = Cast<UAnimInstance>(GetMesh()->GetAnimInstance());
+	ASSERT_CHECK(Anim != nullptr);
+
+	CharacterStat->OnCharacterHPZero.AddLambda([this]()-> void{
+		LOG_WARNING(TEXT("Character dead anim"));
+
+		GetMesh()->SetSimulatePhysics(true);
+	});
 }
 
 float AFPSCharacter_ThirdPerson::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
