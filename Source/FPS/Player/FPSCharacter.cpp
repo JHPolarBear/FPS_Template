@@ -294,6 +294,12 @@ void AFPSCharacter::TurnOffFire()
 	}
 }
 
+void AFPSCharacter::OnDead()
+{
+	// Simply destroy character
+	Destroy();
+}
+
 void AFPSCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
 	if (TouchItem.bIsPressed == true)

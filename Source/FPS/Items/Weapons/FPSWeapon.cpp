@@ -99,6 +99,8 @@ AActor* AFPSWeapon::OnFire(FVector const& Location, FRotator const& Rotation, co
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 
+	OnWeaponStateChanged.Broadcast();
+
 	return NULL;
 }
 

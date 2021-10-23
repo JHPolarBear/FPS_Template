@@ -126,6 +126,11 @@ protected:
 	 void TurnOnFire();
 	 void TurnOffFire();
 
+	 /**
+	  *  On character is dead
+	  */
+	  void OnDead();
+
 	struct TouchData
 	{
 		TouchData() { bIsPressed = false;Location=FVector::ZeroVector;}
@@ -171,5 +176,8 @@ private:
 
 	// Fire Handler
 	FTimerHandle FireHandler;
+
+	// Dead Action Handler
+	FTimerHandle DeadActionHandler;
 };
 

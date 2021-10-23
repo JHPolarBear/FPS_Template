@@ -49,6 +49,8 @@ AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
 		StatBarWidget->SetDrawSize(FVector2D(130, 25.f));
 	}
 
+	DeadTimer = 3.f;
+
 }
 
 // Called when the game starts or when spawned
@@ -63,6 +65,7 @@ void AFPSCharacter_ThirdPerson::BeginPlay()
 			SetWeapon(Weapon);
 	}		
 
+	// Bind character stat widget with character stat component
 	auto CharaterStatWidget = Cast<UCharacterStat_Widget>(StatBarWidget->GetUserWidgetObject());
 	if (CharaterStatWidget != nullptr)
 	{
@@ -96,6 +99,7 @@ void AFPSCharacter_ThirdPerson::PostInitializeComponents()
 		LOG_WARNING(TEXT("Character dead anim"));
 
 		GetMesh()->SetSimulatePhysics(true);
+		OnDead();
 	});
 }
 
@@ -116,6 +120,9 @@ void AFPSCharacter_ThirdPerson::SetWeapon(AFPSWeapon* _weapon)
 	if(_weapon != nullptr && GetMesh()->DoesSocketExist(WeaponSocket))
 	{
 		_weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+
+		_weapon->SetOwner(this);
+		Weapon = _weapon;
 	}
 	else
 	{
@@ -152,5 +159,20 @@ bool AFPSCharacter_ThirdPerson::GetSinglePatrol_Position(FVector& VecPatrolPosit
 		VecPatrolPosition = SinglePatrol_Position->GetActorLocation();
 		return true;
 	}	
+}
+
+void AFPSCharacter_ThirdPerson::OnDead()
+{
+	//SetActorEnableCollision(false);	
+	GetWorld()->GetTimerManager().SetTimer(DeadActionHandler, this, &AFPSCharacter_ThirdPerson::OnDeadAction, DeadTimer, false);
+}
+
+void AFPSCharacter_ThirdPerson::OnDeadAction()
+{
+	if (Weapon)
+		Weapon->Destroy();
+
+	// Simply destroy character
+	Destroy();
 }
 

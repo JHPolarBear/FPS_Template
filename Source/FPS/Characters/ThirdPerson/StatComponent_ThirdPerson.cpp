@@ -119,6 +119,8 @@ void UStatComponent_ThirdPerson::SetCurrentAP(float _newAP)
 	if(CurrentAP < KINDA_SMALL_NUMBER)
 	{
 		CurrentAP = 0.f;
+
+		OnCharacterHPZero.Broadcast();
 	}
 }
 

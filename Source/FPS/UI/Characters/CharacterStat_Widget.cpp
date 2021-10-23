@@ -26,7 +26,6 @@ void UCharacterStat_Widget::BindCharacterStat(class UStatComponent_ThirdPerson* 
 
 	CurrentCharacterStat = _NewCharacterStat;
 	_NewCharacterStat->OnCharacterStatChanged.AddUObject(this, &UCharacterStat_Widget::UpdateCharcterStat);
-
 }
 
 void UCharacterStat_Widget::UpdateCharcterStat()

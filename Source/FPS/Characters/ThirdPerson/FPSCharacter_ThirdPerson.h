@@ -47,6 +47,13 @@ public:
 
 	const float GetRandomMove_PratrolRadius()	{return RandomMove_PatrolRadius;}
 
+	/** On character is dead */
+	void OnDead();
+
+protected:
+	/** On character is dead */
+	void OnDeadAction();
+
 /** Variables */
 private:
 
@@ -67,6 +74,15 @@ private:
 	/**** Weapon  ****/
 	UPROPERTY(VisibleAnywhere, Category = Stat, meta = (AllowPrivateAccess = true))
 	class UStatComponent_ThirdPerson* CharacterStat;
+
+/** Basic Components */
+private:
+	// Dead Action Handler
+	FTimerHandle DeadActionHandler;
+
+	// Dead Action wait time
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat, meta = (AllowPrivateAccess = true))
+	float DeadTimer;
 
 /** UI Components */
 private:
