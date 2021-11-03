@@ -5,6 +5,10 @@
 
 #include "FPSCharacter_ThirdPerson.h"
 
+#include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
+#include "Perception/AIPerceptionComponent.h"
+
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -31,6 +35,38 @@ AFPSAIController_ThirdPerson::AFPSAIController_ThirdPerson()
 	{
 		BTAsset = BTObject.Object;
 	}
+
+
+	// Create perception component
+	SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Perception Component")));
+
+	// Create sight sense config
+	SightSenseConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Sense"));
+	ASSERT_CHECK(SightSenseConfig != nullptr);
+
+	SightSenseConfig->PeripheralVisionAngleDegrees = 30.f;
+	SightSenseConfig->DetectionByAffiliation.bDetectEnemies = true;
+	SightSenseConfig->DetectionByAffiliation.bDetectFriendlies = true;
+	SightSenseConfig->DetectionByAffiliation.bDetectNeutrals = true;
+	SightSenseConfig->SightRadius = 100.f * 20.f;
+	SightSenseConfig->LoseSightRadius = SightSenseConfig->SightRadius * 1.2f;
+	SightSenseConfig->AutoSuccessRangeFromLastSeenLocation = SightSenseConfig->SightRadius * 1.1f;
+
+	// Create hearing sense config
+	HearingSenseConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("Hearing Sense"));
+	ASSERT_CHECK(HearingSenseConfig != nullptr);
+
+	HearingSenseConfig->HearingRange = 100.f;
+	HearingSenseConfig->LoSHearingRange = 100.f * 150.f;
+	HearingSenseConfig->bUseLoSHearing = true;
+	HearingSenseConfig->DetectionByAffiliation.bDetectEnemies = true;
+	HearingSenseConfig->DetectionByAffiliation.bDetectNeutrals = true;
+	HearingSenseConfig->DetectionByAffiliation.bDetectFriendlies = true;
+
+	// add configure to perception component
+	GetPerceptionComponent()->ConfigureSense(*SightSenseConfig);
+	GetPerceptionComponent()->ConfigureSense(*HearingSenseConfig);
+	GetPerceptionComponent()->SetDominantSense(SightSenseConfig->GetSenseImplementation());
 }
 
 void AFPSAIController_ThirdPerson::OnPossess(APawn* aPawn)

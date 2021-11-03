@@ -29,6 +29,11 @@ private:
 	UPROPERTY()
 	class UBlackboardData* BBAsset;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Perception, meta = (AllowPrivateAccess = "true"))
+	class UAISenseConfig_Sight* SightSenseConfig;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Perception, meta = (AllowPrivateAccess = "true"))
+	class UAISenseConfig_Hearing* HearingSenseConfig;
 
 /**** AI Components ****/
 public:
