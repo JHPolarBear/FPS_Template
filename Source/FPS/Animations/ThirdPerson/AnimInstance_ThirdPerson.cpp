@@ -6,6 +6,7 @@
 UAnimInstance_ThirdPerson::UAnimInstance_ThirdPerson()
 {
 	Speed = 0.f;
+	IsDead = false;
 }
 
 void UAnimInstance_ThirdPerson::NativeUpdateAnimation(float DeltaSeconds)

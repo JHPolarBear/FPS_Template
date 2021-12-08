@@ -5,6 +5,8 @@
 
 #include "Components/WidgetComponent.h"
 
+#include "Animations/ThirdPerson/AnimInstance_ThirdPerson.h"
+
 #include "FPSAIController_ThirdPerson.h"
 #include "Items/Weapons/FPSWeapon.h"
 
@@ -18,17 +20,22 @@ AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Set Default Skeletal Mesh
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MAN(TEXT("SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
 	if(SK_MAN.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SK_MAN.Object);
 	}
 
+	// Set Anim Instance
 	static ConstructorHelpers::FClassFinder<UAnimInstance> _ANIM(TEXT("/Game/AnimStarterPack/UE4ASP_HeroTPP_AnimBlueprint.UE4ASP_HeroTPP_AnimBlueprint_C"));
 	if(_ANIM.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(_ANIM.Class);
 	}
+
+	// Set collision profile
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Pawn"));
 
 	// Create default weapon class
 	DefaultWeaponClass = AFPSWeapon::StaticClass();
@@ -104,7 +111,6 @@ void AFPSCharacter_ThirdPerson::PostInitializeComponents()
 	CharacterStat->OnCharacterHPZero.AddLambda([this]()-> void{
 		LOG_WARNING(TEXT("Character dead anim"));
 
-		GetMesh()->SetSimulatePhysics(true);
 		OnDead();
 	});
 }
@@ -168,8 +174,22 @@ bool AFPSCharacter_ThirdPerson::GetSinglePatrol_Position(FVector& VecPatrolPosit
 }
 
 void AFPSCharacter_ThirdPerson::OnDead()
-{
-	//SetActorEnableCollision(false);	
+{	
+	// set properties to not interact with user's action
+	SetActorEnableCollision(false);
+	GetMesh()->SetHiddenInGame(false);
+	SetCanBeDamaged(false);
+
+	// set dead flag to anim instance
+	UAnimInstance_ThirdPerson* _Anim = Cast<UAnimInstance_ThirdPerson>(GetMesh()->GetAnimInstance());
+	if(_Anim)
+	{
+		_Anim->SetIsDead(true);
+	}
+
+	// hide widget
+	StatBarWidget->SetHiddenInGame(true);
+
 	GetWorld()->GetTimerManager().SetTimer(DeadActionHandler, this, &AFPSCharacter_ThirdPerson::OnDeadAction, DeadTimer, false);
 }
 
