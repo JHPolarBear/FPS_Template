@@ -1,7 +1,7 @@
 # FPS_Template
  FPS Game Template with UE4
  
- ## Asset Used
+ ## Assets Used
  1. Animation Starter Pack (From UE4 market place) : [Link](https://www.unrealengine.com/marketplace/en-US/product/animation-starter-pack)
  
  ## License
