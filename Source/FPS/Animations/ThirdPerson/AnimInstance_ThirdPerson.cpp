@@ -5,7 +5,7 @@
 
 UAnimInstance_ThirdPerson::UAnimInstance_ThirdPerson()
 {
-	CurrentSpeed = 0.f;
+	Speed = 0.f;
 }
 
 void UAnimInstance_ThirdPerson::NativeUpdateAnimation(float DeltaSeconds)
@@ -15,6 +15,6 @@ void UAnimInstance_ThirdPerson::NativeUpdateAnimation(float DeltaSeconds)
 	auto Pawn = TryGetPawnOwner();
 	if(::IsValid(Pawn))
 	{
-		CurrentSpeed = Pawn->GetVelocity().Size();
+		Speed = Pawn->GetVelocity().Size();
 	}
 }

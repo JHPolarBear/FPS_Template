@@ -18,7 +18,13 @@ AFPSCharacter_ThirdPerson::AFPSCharacter_ThirdPerson()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	static ConstructorHelpers::FClassFinder<UAnimInstance> _ANIM(TEXT("AnimBlueprint'/Game/ThirdPerson/Animations/AnimBlueprint_ThirdPerson.AnimBlueprint_ThirdPerson_C'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_MAN(TEXT("SkeletalMesh'/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin'"));
+	if(SK_MAN.Succeeded())
+	{
+		GetMesh()->SetSkeletalMesh(SK_MAN.Object);
+	}
+
+	static ConstructorHelpers::FClassFinder<UAnimInstance> _ANIM(TEXT("/Game/AnimStarterPack/UE4ASP_HeroTPP_AnimBlueprint.UE4ASP_HeroTPP_AnimBlueprint_C"));
 	if(_ANIM.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(_ANIM.Class);

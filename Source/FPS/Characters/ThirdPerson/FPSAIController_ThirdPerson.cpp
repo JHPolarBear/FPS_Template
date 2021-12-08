@@ -44,7 +44,7 @@ AFPSAIController_ThirdPerson::AFPSAIController_ThirdPerson()
 	SightSenseConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Sense"));
 	ASSERT_CHECK(SightSenseConfig != nullptr);
 
-	SightSenseConfig->PeripheralVisionAngleDegrees = 30.f;
+	SightSenseConfig->PeripheralVisionAngleDegrees = 20.f;
 	SightSenseConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightSenseConfig->DetectionByAffiliation.bDetectFriendlies = true;
 	SightSenseConfig->DetectionByAffiliation.bDetectNeutrals = true;
