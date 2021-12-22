@@ -1,7 +1,6 @@
 # FPS_Template
  FPS Game Template with UE4
- <img src="Sample_Image.png"
-     alt="Sample Image"
+ <img src="./Documents/Sample_Image.png"
      style="float: left; margin-right: 10px;" />
  
  ## Assets Used
