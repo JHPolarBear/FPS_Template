@@ -180,6 +180,10 @@ void AFPSCharacter_ThirdPerson::OnDead()
 
 	// set properties to not interact with user's action
 	SetActorEnableCollision(false);
+
+	GetController()->StopMovement();
+	GetController()->UnPossess();
+
 	GetMesh()->SetHiddenInGame(false);
 	SetCanBeDamaged(false);
 
