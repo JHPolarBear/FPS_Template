@@ -1,6 +1,6 @@
 # FPS_Template
  FPS Game Template with UE4
- <img src="markdownmonstericon.png"
+ <img src="Sample_Image.png"
      alt="Sample Image"
      style="float: left; margin-right: 10px;" />
  
