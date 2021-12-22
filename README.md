@@ -1,7 +1,8 @@
 # FPS_Template
  FPS Game Template with UE4
- <img src="./Documents/Sample_Image.png"
-     style="float: left; margin-right: 10px;" />
+ <br><br> <img src="./Documents/Sample_Image.png"
+     style="float: left; margin-right: 10px;"
+     width = "600px"/>
  
  ## Assets Used
  1. Animation Starter Pack (From UE4 market place) : [Link](https://www.unrealengine.com/marketplace/en-US/product/animation-starter-pack)
