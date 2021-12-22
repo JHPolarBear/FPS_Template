@@ -29,6 +29,8 @@ AFPSWeapon::AFPSWeapon()
 	MuzzleLocation->SetupAttachment(Mesh);
 	MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));	
 
+	ProjectileClass = AFPSProjectile::StaticClass();
+
 }
 
 // Called when the game starts or when spawned
@@ -65,6 +67,11 @@ float AFPSWeapon::GetFireRate() const
 	return ItemData->FireRate;
 }
 
+FString AFPSWeapon::GetThumbnailPath() const
+{
+	return ItemData->ThumbnailPath;
+}
+
 void AFPSWeapon::SetProjectileBounce(bool _val)
 {
 	ItemData->IsProjectileBounce = _val;
@@ -87,7 +94,13 @@ AActor* AFPSWeapon::OnFire(FVector const& Location, FRotator const& Rotation, co
 {
 	if(ProjectileClass)
 	{
-		auto Bullet = GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, Location, Rotation, SpawnParameters);
+		AFPSProjectile* Bullet = GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, Location, Rotation, SpawnParameters);
+
+		if(Bullet)
+		{
+			Bullet->SetDamageValue(ItemData->DamageValue);
+			Bullet->SetIsBounce(ItemData->IsProjectileBounce);
+		}
 
 		//return Bullet;
 	}

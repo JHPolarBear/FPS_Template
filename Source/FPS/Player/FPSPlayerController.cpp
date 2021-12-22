@@ -56,7 +56,7 @@ void AFPSPlayerController::BeginPlay()
 		AFPSWeapon* pWeapon = FPSCharacter->GetWeapon();
 		if( WeaponWidget->BindWeapon(pWeapon))
 		{
-			pWeapon->OnWeaponStateChanged.Broadcast();
+			pWeapon->OnWeaponChanged.Broadcast();
 		}
 	}
 }

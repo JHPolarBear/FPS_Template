@@ -21,6 +21,8 @@ public:
 
 	void UpdateWeaponState();
 
+	void UpdateWeaponInfo();
+
 private:
 	TWeakObjectPtr<class AFPSWeapon> CurrentWeapon;
 

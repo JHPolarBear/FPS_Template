@@ -32,7 +32,7 @@ struct FItemData : public FTableRowBase
 
 public:
 
-	FItemData() : Type(0), Name(TEXT("")), FireRate(1.f), IsProjectileBounce(false), ThumbnailPath(TEXT("")) {}
+	FItemData() : Type(0), Name(TEXT("")), FireRate(1.f), DamageValue(1.f), IsProjectileBounce(false), ThumbnailPath(TEXT("")) {}
 
 	// Weapon ID
 	// use datatable index
@@ -48,6 +48,9 @@ public:
 	/** Weapon Fire Rate */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	float FireRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float DamageValue;
 
 	/** can the projectile from weapon can be bounce */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")

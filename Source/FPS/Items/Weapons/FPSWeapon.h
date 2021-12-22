@@ -6,9 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "FPSWeapon.generated.h"
 
-// delegate about weapon status(broadcast when weapon changed or ammo count changed)
-// 무기가 변경되었거나, 무기의 상태(장탄 수 등)이 바뀌었을때 브로드캐스트되는 Delegate
+// delegate about weapon status(broadcast when ammo count changed)
+// 무기의 상태(장탄 수 등)이 바뀌었을때 브로드캐스트되는 Delegate
 DECLARE_MULTICAST_DELEGATE(FOnWeaponStateChangedDelegate);
+
+// delegate about changing weapon 
+DECLARE_MULTICAST_DELEGATE(FOnWeaponChangedDelegate);
 
 UCLASS()
 class FPS_API AFPSWeapon : public AActor
@@ -25,12 +28,16 @@ public:
 
 	float	GetFireRate() const;
 
+	FString GetThumbnailPath() const;
+
 	void	SetProjectileBounce(bool _val);
 	float	GetProjectileBounce() const;
 
 	virtual AActor* OnFire(FVector const& Location, FRotator const& Rotation, const FActorSpawnParameters& SpawnParameters = FActorSpawnParameters());
 
 	FOnWeaponStateChangedDelegate OnWeaponStateChanged;
+
+	FOnWeaponChangedDelegate OnWeaponChanged;
 
 protected:
 	// Called when the game starts or when spawned

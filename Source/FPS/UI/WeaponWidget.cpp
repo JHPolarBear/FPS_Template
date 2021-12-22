@@ -4,6 +4,8 @@
 #include "UI/WeaponWidget.h"
 #include "Components/Image.h" 
 
+#include "Player/FPSCharacter.h"
+
 #include "Items/Weapons/FPSWeapon.h"
 
 bool UWeaponWidget::BindWeapon(class AFPSWeapon* weapon)
@@ -12,6 +14,7 @@ bool UWeaponWidget::BindWeapon(class AFPSWeapon* weapon)
 	{
 		CurrentWeapon = weapon;
 		weapon->OnWeaponStateChanged.AddUObject(this, &UWeaponWidget::UpdateWeaponState);
+		weapon->OnWeaponChanged.AddUObject(this, &UWeaponWidget::UpdateWeaponInfo);
 
 		LOG_WARNING(TEXT("Success to bind weapon"));
 
@@ -34,10 +37,35 @@ void UWeaponWidget::NativeConstruct()
 
 void UWeaponWidget::UpdateWeaponState()
 {
-	/*ConstructorHelpers::FObjectFinder<UTexture2D> TXT_THUMB(TEXT("Texture2D'/Game/Images/Thumbnails/thumbnail_default_gun.thumbnail_default_gun'"));
-	if(TXT_THUMB.Succeeded())
+	
+}
+
+void UWeaponWidget::UpdateWeaponInfo()
+{
+	auto CrntPlayer = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	if (CrntPlayer)
 	{
-		UTexture2D* texture_ = TXT_THUMB.Object;
-		ThumbnailImage->SetBrushFromTexture(texture_);
-	}*/
+		AFPSCharacter* pPlayer = Cast<AFPSCharacter>(CrntPlayer);
+
+		if (pPlayer)
+		{
+
+			FString ThumbnailPath = TEXT("/Game/Images/Thumbnails/");
+			FString ThumbnailName = pPlayer->GetWeapon()->GetThumbnailPath();
+
+			ThumbnailPath.Append(FString::Printf(TEXT("%s"), *ThumbnailName));
+
+			UTexture2D* Texture = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), NULL, *ThumbnailPath));
+
+			if (Texture)
+			{
+				ThumbnailImage->SetBrushFromSoftTexture(Texture);
+				//LOG_WARNING(TEXT("Success to create texture"));
+			}
+			else
+			{
+				//LOG_WARNING(TEXT("Failed to create texture"));
+			}
+		}
+	}
 }

@@ -1,0 +1,2 @@
+ID,Type,Name,FireRate,DamageValue,IsProjectileBounce,ThumbnailPath
+0,1,Default Gun,10,5,FALSE,FP_Default_Gun_Thumbnail

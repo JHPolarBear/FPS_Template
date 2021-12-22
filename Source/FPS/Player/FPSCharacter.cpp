@@ -90,8 +90,8 @@ AFPSCharacter::AFPSCharacter()
 void AFPSCharacter::SetWeapon(class AFPSWeapon* weapon)
 {
 	FP_Weapon = weapon;
-
-	FP_Weapon->OnWeaponStateChanged.Broadcast();
+	
+	FP_Weapon->OnWeaponChanged.Broadcast();
 }
 
 void AFPSCharacter::BeginPlay()

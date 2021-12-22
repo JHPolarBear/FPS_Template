@@ -25,6 +25,9 @@ class AFPSProjectile : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Status, meta = (AllowPrivateAccess = "true"))
 	bool IsBounce;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Status, meta = (AllowPrivateAccess = "true"))
+	float DamageValue;
+
 public:
 	AFPSProjectile();
 
@@ -34,6 +37,9 @@ public:
 
 	void SetIsBounce(bool _val);
 	bool GetIsBounce() const; 
+
+	void SetDamageValue(float _val);
+	float GetDamageValue() const;
 
 	/** Returns CollisionComp subobject **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }

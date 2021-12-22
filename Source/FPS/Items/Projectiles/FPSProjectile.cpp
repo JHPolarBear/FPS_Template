@@ -44,8 +44,9 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		if(IsBounce)
 		{
 			// Make Bounce
+			ProjectileMovement->AddForce(GetVelocity() * -1 * 0.7f);
  
-			Destroy();
+			//Destroy();
 		}
 		else
 		{
@@ -57,7 +58,7 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		if(OtherCharacter != nullptr)
 		{
 			FDamageEvent DamageEvent;
-			OtherCharacter->TakeDamage(5.0f, DamageEvent, nullptr, this);
+			OtherCharacter->TakeDamage(DamageValue, DamageEvent, nullptr, this);
 		}
 	}
 }
@@ -70,4 +71,14 @@ void AFPSProjectile::SetIsBounce(bool _val)
 bool AFPSProjectile::GetIsBounce() const
 {
 	return IsBounce;
+}
+
+void AFPSProjectile::SetDamageValue(float _val)
+{
+	DamageValue = _val;
+}
+
+float AFPSProjectile::GetDamageValue() const
+{
+	return DamageValue;
 }
