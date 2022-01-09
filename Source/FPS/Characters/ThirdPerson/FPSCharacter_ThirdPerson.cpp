@@ -174,15 +174,15 @@ bool AFPSCharacter_ThirdPerson::GetSinglePatrol_Position(FVector& VecPatrolPosit
 }
 
 void AFPSCharacter_ThirdPerson::OnDead()
-{	
-	GetController()->StopMovement();
-	GetController()->UnPossess();
+{
+	if(GetController())
+	{
+		GetController()->StopMovement();
+		GetController()->UnPossess();
+	}
 
 	// set properties to not interact with user's action
 	SetActorEnableCollision(false);
-
-	GetController()->StopMovement();
-	GetController()->UnPossess();
 
 	GetMesh()->SetHiddenInGame(false);
 	SetCanBeDamaged(false);
