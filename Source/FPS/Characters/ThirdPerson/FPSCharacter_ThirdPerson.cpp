@@ -173,6 +173,51 @@ bool AFPSCharacter_ThirdPerson::GetSinglePatrol_Position(FVector& VecPatrolPosit
 	}	
 }
 
+void AFPSCharacter_ThirdPerson::TurnOnFire()
+{
+	OnFire();
+
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		float FireRate = 1.f;
+
+		if (Weapon)
+			FireRate = Weapon->GetFireRate();
+
+		World->GetTimerManager().SetTimer(FireHandler, this, &AFPSCharacter_ThirdPerson::OnFire, 1.0f / FireRate, true);
+	}
+}
+
+void AFPSCharacter_ThirdPerson::OnFire()
+{
+	if(Weapon == nullptr)
+		return;
+
+	UWorld* const World = GetWorld();
+	if (World != nullptr)
+	{
+		const FRotator SpawnRotation = GetControlRotation();
+
+		// Weapon's projectile start location
+		FVector WeaponMuzzleLocation = FVector::ZeroVector;
+		if (Weapon)
+		{
+			WeaponMuzzleLocation = Weapon->GetMuzzleLocation();
+		}
+
+		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+		const FVector SpawnLocation = ((WeaponMuzzleLocation != FVector::ZeroVector) ? WeaponMuzzleLocation : GetActorLocation()) ;
+
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		// Activate equipped player weapon
+		Weapon->OnFire(SpawnLocation, SpawnRotation, ActorSpawnParams);
+	}
+}
+
 void AFPSCharacter_ThirdPerson::OnDead()
 {
 	if(GetController())

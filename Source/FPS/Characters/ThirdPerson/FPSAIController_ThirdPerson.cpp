@@ -16,6 +16,9 @@
 const FName AFPSAIController_ThirdPerson::CrntPosKey(TEXT("CrntPos"));
 const FName AFPSAIController_ThirdPerson::NextPosKey(TEXT("NextPos"));
 
+const FName AFPSAIController_ThirdPerson::TargetKey(TEXT("Target"));
+const FName AFPSAIController_ThirdPerson::IsAttackableKey(TEXT("IsAttackable"));
+
 const FName AFPSAIController_ThirdPerson::PatrolTypeKey(TEXT("PatrolType"));
 
 const FName AFPSAIController_ThirdPerson::SimplePatrol_FindPosKey(TEXT("SimplePatrol_FindPos"));

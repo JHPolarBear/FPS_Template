@@ -45,6 +45,11 @@ public:
 	static const FName CrntPosKey;
 	static const FName NextPosKey;
 
+	// Target Key
+	static const FName TargetKey;
+	// Can AI attack the target
+	static const FName IsAttackableKey;
+
 	// NPC's patrol type
 	static const FName PatrolTypeKey;
 

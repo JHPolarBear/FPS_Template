@@ -47,6 +47,12 @@ public:
 
 	const float GetRandomMove_PratrolRadius()	{return RandomMove_PatrolRadius;}
 
+	/** Invoke OnFire and set fire time **/
+	void TurnOnFire();
+
+	/** Actual Fire Action **/
+	void OnFire();
+
 	/** On character is dead */
 	void OnDead();
 
@@ -79,6 +85,9 @@ private:
 private:
 	// Dead Action Handler
 	FTimerHandle DeadActionHandler;
+
+	// Fire Handler
+	FTimerHandle FireHandler;
 
 	// Dead Action wait time
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat, meta = (AllowPrivateAccess = true))
