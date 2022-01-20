@@ -47,14 +47,21 @@ public:
 
 	const float GetRandomMove_PratrolRadius()	{return RandomMove_PatrolRadius;}
 
+	void AimTarget(FVector TargetLocation);
+
 	/** Invoke OnFire and set fire time **/
 	void TurnOnFire();
 
 	/** Actual Fire Action **/
 	void OnFire();
 
+	/** Stop Fire **/
+	void TurnOffFire();
+
 	/** On character is dead */
 	void OnDead();
+
+	const FTimerHandle GetFireHandle()	{return FireHandler;}
 
 protected:
 	/** On character is dead */
@@ -68,7 +75,7 @@ private:
 
 	// 기본 무기 클래스
 	// Default weapon class
-	UPROPERTY(EditInstanceOnly, Category = Weapon, meta= (AllowPrivateAccess = true) )
+	UPROPERTY(EditAnywhere, Category = Weapon, meta= (AllowPrivateAccess = true) )
 	TSubclassOf<class AFPSWeapon> DefaultWeaponClass;
 
 	// 현재 장착 중인 무기

@@ -31,6 +31,11 @@ AFPSWeapon::AFPSWeapon()
 
 	ProjectileClass = AFPSProjectile::StaticClass();
 
+	static ConstructorHelpers::FObjectFinder<USoundBase> SB_FIRESOUND(TEXT("SoundWave'/Game/FirstPerson/Audio/FirstPersonTemplateWeaponFire02.FirstPersonTemplateWeaponFire02'"));
+	if(SB_FIRESOUND.Succeeded())
+	{
+		FireSound = SB_FIRESOUND.Object;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -90,11 +95,19 @@ float AFPSWeapon::GetProjectileBounce() const
 	return ItemData->IsProjectileBounce;
 }
 
-AActor* AFPSWeapon::OnFire(FVector const& Location, FRotator const& Rotation, const FActorSpawnParameters& SpawnParameters /*= FActorSpawnParameters()*/)
+AActor* AFPSWeapon::OnFire(FRotator const& Rotation)
 {
 	if(ProjectileClass)
 	{
-		AFPSProjectile* Bullet = GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, Location, Rotation, SpawnParameters);
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.Owner = this;
+		ActorSpawnParams.Instigator = GetInstigator();
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+		FVector StartPos = MuzzleLocation->GetComponentLocation();
+
+		AFPSProjectile* Bullet = GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, StartPos, Rotation, ActorSpawnParams);
 
 		if(Bullet)
 		{

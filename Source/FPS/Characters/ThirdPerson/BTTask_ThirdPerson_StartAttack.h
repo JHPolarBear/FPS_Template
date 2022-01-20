@@ -16,6 +16,7 @@ class FPS_API UBTTask_ThirdPerson_StartAttack : public UBTTaskNode
 
 public:
 	UBTTask_ThirdPerson_StartAttack();
+
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 };

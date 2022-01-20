@@ -90,6 +90,10 @@ AFPSCharacter::AFPSCharacter()
 void AFPSCharacter::SetWeapon(class AFPSWeapon* weapon)
 {
 	FP_Weapon = weapon;
+
+	FP_Weapon->SetOwner(this);
+	FP_Weapon->SetHiddenInGame(false);
+	FP_Weapon->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("GripPoint"));
 	
 	FP_Weapon->OnWeaponChanged.Broadcast();
 }
@@ -106,10 +110,6 @@ void AFPSCharacter::BeginPlay()
 	{
 		auto DefalutWeapon = GetWorld()->SpawnActor<AFPSWeapon>(WeaponClass, FVector::ZeroVector, FRotator::ZeroRotator);
 		SetWeapon(DefalutWeapon);
-
-		FP_Weapon->SetOwner(this);
-		FP_Weapon->SetHiddenInGame(false);
-		FP_Weapon->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("GripPoint"));
 	}
 
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
@@ -217,12 +217,8 @@ void AFPSCharacter::OnFire()
 				// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
 				const FVector SpawnLocation = ((WeaponMuzzleLocation != FVector::ZeroVector) ? WeaponMuzzleLocation : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
 
-				//Set Spawn Collision Handling Override
-				FActorSpawnParameters ActorSpawnParams;
-				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
 				// Activate equipped player weapon
-				FP_Weapon->OnFire(SpawnLocation, SpawnRotation, ActorSpawnParams);
+				FP_Weapon->OnFire(SpawnRotation);
 
 				// Shake camera
 				World->GetFirstPlayerController()->PlayerCameraManager->StartCameraShake(CameraShake, 1.0);

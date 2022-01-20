@@ -22,8 +22,8 @@ void UBTService_ThirdPerson_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, 
 
 	UWorld* World = ControllingPawn->GetWorld();
 	FVector Center = ControllingPawn->GetActorLocation();
-	float DetectRadius = 800.f;
-	float AttackRange = 400.f;
+	float DetectRadius = 1400.f;
+	float AttackRange = 1000.f;
 
 	bool isAttackable = false;
 	AFPSCharacter* Target = nullptr;

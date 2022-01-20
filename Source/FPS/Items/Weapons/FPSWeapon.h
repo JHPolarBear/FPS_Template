@@ -33,7 +33,7 @@ public:
 	void	SetProjectileBounce(bool _val);
 	float	GetProjectileBounce() const;
 
-	virtual AActor* OnFire(FVector const& Location, FRotator const& Rotation, const FActorSpawnParameters& SpawnParameters = FActorSpawnParameters());
+	virtual AActor* OnFire(FRotator const& Rotation);
 
 	FOnWeaponStateChangedDelegate OnWeaponStateChanged;
 
@@ -67,7 +67,7 @@ private:
 
 	/** Location on gun mesh where projectiles should spawn. */
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-	USceneComponent* MuzzleLocation;	
+	USceneComponent* MuzzleLocation;
 
 	///** Weapon Fire Rate */
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))

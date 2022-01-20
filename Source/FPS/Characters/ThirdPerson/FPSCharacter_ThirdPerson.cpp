@@ -4,6 +4,7 @@
 #include "Characters/ThirdPerson/FPSCharacter_ThirdPerson.h"
 
 #include "Components/WidgetComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "Animations/ThirdPerson/AnimInstance_ThirdPerson.h"
 
@@ -131,8 +132,7 @@ void AFPSCharacter_ThirdPerson::SetWeapon(AFPSWeapon* _weapon)
 	FName WeaponSocket(TEXT("hand_rSocket"));
 	if(_weapon != nullptr && GetMesh()->DoesSocketExist(WeaponSocket))
 	{
-		_weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-
+		_weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
 		_weapon->SetOwner(this);
 		Weapon = _weapon;
 	}
@@ -173,6 +173,13 @@ bool AFPSCharacter_ThirdPerson::GetSinglePatrol_Position(FVector& VecPatrolPosit
 	}	
 }
 
+void AFPSCharacter_ThirdPerson::AimTarget(FVector TargetLocation)
+{
+	FRotator LookAt = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetLocation);
+
+	SetActorRotation(FQuat(LookAt));
+}
+
 void AFPSCharacter_ThirdPerson::TurnOnFire()
 {
 	OnFire();
@@ -192,12 +199,15 @@ void AFPSCharacter_ThirdPerson::TurnOnFire()
 void AFPSCharacter_ThirdPerson::OnFire()
 {
 	if(Weapon == nullptr)
+	{
+		LOG_ERROR(TEXT("Failed to find weapon"));
 		return;
+	}
 
 	UWorld* const World = GetWorld();
 	if (World != nullptr)
 	{
-		const FRotator SpawnRotation = GetControlRotation();
+		const FRotator SpawnRotation = GetActorRotation();
 
 		// Weapon's projectile start location
 		FVector WeaponMuzzleLocation = FVector::ZeroVector;
@@ -207,14 +217,19 @@ void AFPSCharacter_ThirdPerson::OnFire()
 		}
 
 		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-		const FVector SpawnLocation = ((WeaponMuzzleLocation != FVector::ZeroVector) ? WeaponMuzzleLocation : GetActorLocation()) ;
-
-		//Set Spawn Collision Handling Override
-		FActorSpawnParameters ActorSpawnParams;
-		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		const FVector SpawnLocation = ((WeaponMuzzleLocation != FVector::ZeroVector) ? WeaponMuzzleLocation : GetActorLocation() + SpawnRotation.RotateVector(FVector(100.f, 0.f, 0.f)) ) ;
 
 		// Activate equipped player weapon
-		Weapon->OnFire(SpawnLocation, SpawnRotation, ActorSpawnParams);
+		Weapon->OnFire(SpawnRotation);
+	}
+}
+
+void AFPSCharacter_ThirdPerson::TurnOffFire()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		World->GetTimerManager().ClearTimer(FireHandler);
 	}
 }
 
